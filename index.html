@@ -1,57 +1,200 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-<title>Моя презентация</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя презентация и логи</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        .date {
+            font-size: 0.85em;
+            color: #888;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Стили для ссылок */
+        .download-section {
+            background: #eef7ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Стили для предсказаний */
+        .prediction-list {
+            list-style: none;
+            padding: 0;
+        }
+        .prediction-list li {
+            background: #fff;
+            border: 1px solid #ddd;
+            margin: 5px 0;
+            padding: 8px;
+            display: flex;
+            justify-content: space-between;
+            border-radius: 4px;
+        }
+        .prediction-list li:first-child {
+            background: #e8f8f5; /* Подсветка лидера */
+            border-color: #2ecc71;
+            font-weight: bold;
+        }
+
+        /* Стили для диалога бота */
+        .chat-log {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .chat-user { color: #d35400; font-weight: bold; }
+        .chat-bot { color: #27ae60; font-weight: bold; }
+        .chat-meta { font-size: 0.8em; color: #777; }
+
+        /* Стили для цитаты */
+        blockquote {
+            background: #fff8e1;
+            border-left: 5px solid #f1c40f;
+            margin: 20px 0;
+            padding: 15px;
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Стили для криптоарифметики (карточки) */
+        .puzzle-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .puzzle-title { font-weight: bold; font-size: 1.1em; color: #2c3e50; margin-bottom: 8px; }
+        .puzzle-vars { font-family: monospace; color: #555; margin-bottom: 8px; font-size: 0.9em; }
+        .puzzle-check { 
+            background: #f0f0f0; 
+            padding: 8px; 
+            border-radius: 4px; 
+            font-family: monospace; 
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
 
-  <p>
-Нажмите, чтобы скачать или открыть презентацию:
-<a href="СетьВводный.pptx">Презентация в формате .pptx</a>
-Нажмите, чтобы скачать или открыть index.html:
-<a href="index.html">Файл проверки работы с кириллицей .html</a>
-  </p>
-<p>
-16.02.26
-Топ-3 предсказаний:
-husky: 75.46%
-Siberian Husky: 23.30%
-Alaskan Malamute: 1.00%
-</p>
-<p>
-16.02.26
-Вопрос пользователя: Как оплатить заказ?
-Найден FAQ-вопрос: Как оплатить заказ? (sim=0.941)
-Ответ бот-FAQ: Оплатить можно по QR-коду или по номеру телефона 
-</p>
-<p>
-21.02.26
-У каждого поколения есть свой философ, писатель или художник, который захватывает и воплощает в себе идею времени. Иногда эти философы получают признание при жизни, но чаще всего им приходится ждать, пока на них наложит свой отпечаток время. Независимо от того, будет ли это признание немедленным или запоздалым, эпоха отмечена этими людьми, выражающими свои идеалы в шепоте стихов или в грохоте политического движения. У нашего поколения есть философ. Он не художник и не писатель. Он программист.
-</p>
-<p>25.02.26 Решение для: ВОЛК + ЛИСА == ЗВЕРИ ---
-Решение найдено:
-ВОЛК + ЛИСА == ЗВЕРИ
-О=2 С=6 В=8 Р=5 К=3 А=4 З=1 Л=9 Е=0 И=7 
-Проверка: 8293 + 9764 == 18057
+<div class="container">
+    <h1>Журнал событий и Презентация</h1>
 
---- Решение для: КТО + КОТ == ТОК ---
-Решение найдено:
-КТО + КОТ == ТОК
-О=5 К=4 Т=9 
-Проверка: 495 + 459 == 954
+    <!-- Секция файлов -->
+    <div class="download-section">
+        <p><strong>Файлы для скачивания:</strong></p>
+        <ul>
+            <li><a href="СетьВводный.pptx" download>📄 Презентация в формате .pptx</a></li>
+            <li><a href="index.html" download>🌐 Файл проверки работы с кириллицей (.html)</a></li>
+        </ul>
+    </div>
 
---- Решение для: КОШКА + КОШКА + КОШКА == СОБАКА ---
-Решение найдено:
-КОШКА + КОШКА + КОШКА == СОБАКА
-О=6 С=1 Ш=3 К=5 А=0 Б=9 
-Проверка: 56350 + 56350 + 56350 == 169050
+    <!-- Секция предсказаний -->
+    <div>
+        <div class="date">16.02.26</div>
+        <h2>Топ-3 предсказания модели</h2>
+        <ul class="prediction-list">
+            <li><span>Husky</span> <span>75.46%</span></li>
+            <li><span>Siberian Husky</span> <span>23.30%</span></li>
+            <li><span>Alaskan Malamute</span> <span>1.00%</span></li>
+        </ul>
+    </div>
 
---- Решение для: СИНУС + СИНУС + КОСИНУС == ТАНГЕНС ---
-Решение найдено:
-СИНУС + СИНУС + КОСИНУС == ТАНГЕНС
-О=9 С=5 Т=4 У=2 Г=6 К=3 Н=7 А=0 Е=1 И=8 
-Проверка: 58725 + 58725 + 3958725 == 4076175
-</p>
-  
+    <!-- Секция FAQ бота -->
+    <div>
+        <div class="date">16.02.26</div>
+        <h2>Лог работы Бот-FAQ</h2>
+        <div class="chat-log">
+            <p><span class="chat-user">Вопрос пользователя:</span> Как оплатить заказ?</p>
+            <p class="chat-meta">Найден FAQ-вопрос: "Как оплатить заказ?" (sim=0.941)</p>
+            <p><span class="chat-bot">Ответ бота:</span> Оплатить можно по QR-коду или по номеру телефона</p>
+        </div>
+    </div>
+
+    <!-- Секция цитаты -->
+    <div>
+        <div class="date">21.02.26</div>
+        <blockquote>
+            У каждого поколения есть свой философ, писатель или художник, который захватывает и воплощает в себе идею времени. Иногда эти философы получают признание при жизни, но чаще всего им приходится ждать, пока на них наложит свой отпечаток время. Независимо от того, будет ли это признание немедленным или запоздалым, эпоха отмечена этими людьми, выражающими свои идеалы в шепоте стихов или в грохоте политического движения. У нашего поколения есть философ. Он не художник и не писатель. Он программист.
+        </blockquote>
+    </div>
+
+    <!-- Секция криптоарифметики -->
+    <div>
+        <div class="date">25.02.26</div>
+        <h2>Решения криптоарифметических задач</h2>
+
+        <div class="puzzle-card">
+            <div class="puzzle-title">ВОЛК + ЛИСА == ЗВЕРИ</div>
+            <div class="puzzle-vars">О=2 С=6 В=8 Р=5 К=3 А=4 З=1 Л=9 Е=0 И=7</div>
+            <div class="puzzle-check">Проверка: 8293 + 9764 == 18057</div>
+        </div>
+
+        <div class="puzzle-card">
+            <div class="puzzle-title">КТО + КОТ == ТОК</div>
+            <div class="puzzle-vars">О=5 К=4 Т=9</div>
+            <div class="puzzle-check">Проверка: 495 + 459 == 954</div>
+        </div>
+
+        <div class="puzzle-card">
+            <div class="puzzle-title">КОШКА + КОШКА + КОШКА == СОБАКА</div>
+            <div class="puzzle-vars">О=6 С=1 Ш=3 К=5 А=0 Б=9</div>
+            <div class="puzzle-check">Проверка: 56350 + 56350 + 56350 == 169050</div>
+        </div>
+
+        <div class="puzzle-card">
+            <div class="puzzle-title">СИНУС + СИНУС + КОСИНУС == ТАНГЕНС</div>
+            <div class="puzzle-vars">О=9 С=5 Т=4 У=2 Г=6 К=3 Н=7 А=0 Е=1 И=8</div>
+            <div class="puzzle-check">Проверка: 58725 + 58725 + 3958725 == 4076175</div>
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>
