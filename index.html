@@ -3,143 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Журнал событий</title>
+    <title>Моя презентация и логи</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: #24292e;
-            background-color: #fff;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        h1 { border-bottom: 1px solid #eaecef; padding-bottom: .3em; }
-        h2 { border-bottom: 1px solid #eaecef; padding-bottom: .3em; margin-top: 24px; }
-        a { color: #0366d6; text-decoration: none; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #24292e; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f6f8fa; }
+        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        h1 { border-bottom: 1px solid #eaecef; padding-bottom: 10px; }
+        h2 { margin-top: 30px; color: #0366d6; }
+        a { color: #0366d6; text-decoration: none; font-weight: bold; }
         a:hover { text-decoration: underline; }
-        
-        /* Блоки кода */
-        pre {
-            background-color: #f6f8fa;
-            border-radius: 6px;
-            padding: 16px;
-            overflow: auto;
-            font-size: 85%;
-            line-height: 1.45;
-            border: 1px solid #e1e4e8;
-        }
-        code { font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }
-        
-        /* Цитаты */
-        blockquote {
-            border-left: 4px solid #dfe2e5;
-            color: #6a737d;
-            padding-left: 1em;
-            margin-left: 0;
-        }
-        
-        /* Таблицы */
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 16px 0;
-        }
-        th, td {
-            border: 1px solid #dfe2e5;
-            padding: 8px 12px;
-            text-align: left;
-        }
-        th { background-color: #f6f8fa; font-weight: 600; }
-        
-        /* Карточки */
-        .card {
-            border: 1px solid #e1e4e8;
-            border-radius: 6px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        .highlight { font-weight: bold; color: #22863a; }
+        .btn { display: inline-block; padding: 8px 16px; background: #2ea44f; color: white !important; border-radius: 6px; text-decoration: none; margin-right: 10px; }
+        .btn:hover { background: #2c974b; text-decoration: none; }
+        blockquote { border-left: 4px solid #dfe2e5; padding-left: 15px; color: #586069; margin: 20px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #dfe2e5; padding: 8px; text-align: left; }
+        th { background-color: #f6f8fa; }
+        code { background: #f6f8fa; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+        .log-entry { background: #f6f8fa; padding: 15px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #eaecef; }
     </style>
 </head>
 <body>
 
-<h1>📂 Журнал событий и Презентация</h1>
+<div class="container">
+    <h1>Журнал событий и Презентация</h1>
 
-<div class="card">
-    <h3>📥 Файлы для скачивания</h3>
+    <p>
+        <a href="СетьВводный.pptx" class="btn">📄 Скачать презентацию</a>
+        <a href="index.html" class="btn">🌐 Проверка кириллицы</a>
+    </p>
+
+    <hr>
+
+    <h2>📅 16.02.26 | Топ-3 предсказания</h2>
+    <table>
+        <tr><th>Класс</th><th>Вероятность</th></tr>
+        <tr><td>Husky</td><td><strong>75.46%</strong></td></tr>
+        <tr><td>Siberian Husky</td><td>23.30%</td></tr>
+        <tr><td>Alaskan Malamute</td><td>1.00%</td></tr>
+    </table>
+
+    <h2>💬 Лог работы Бот-FAQ</h2>
+    <div class="log-entry">
+        <p><strong>Вопрос:</strong> Как оплатить заказ?</p>
+        <p><small>System: Найден FAQ-вопрос (sim=0.941)</small></p>
+        <p><strong>Ответ:</strong> Оплатить можно по QR-коду или по номеру телефона</p>
+    </div>
+
+    <h2>💭 Цитата</h2>
+    <blockquote>
+        У каждого поколения есть свой философ... У нашего поколения есть философ. Он не художник и не писатель. Он программист.
+    </blockquote>
+
+    <h2>🧩 Решения криптоарифметики</h2>
+    
+    <p><strong>ВОЛК + ЛИСА == ЗВЕРИ</strong><br>
+    <code>О=2 С=6 В=8 Р=5 К=3 А=4 З=1 Л=9 Е=0 И=7</code><br>
+    Проверка: <code>8293 + 9764 == 18057</code></p>
+
+    <p><strong>КТО + КОТ == ТОК</strong><br>
+    <code>О=5 К=4 Т=9</code><br>
+    Проверка: <code>495 + 459 == 954</code></p>
+
+    <p><strong>КОШКА * 3 == СОБАКА</strong><br>
+    <code>О=6 С=1 Ш=3 К=5 А=0 Б=9</code><br>
+    Проверка: <code>56350 + 56350 + 56350 == 169050</code></p>
+
+    <p><strong>2*СИНУС + КОСИНУС == ТАНГЕНС</strong><br>
+    <code>О=9 С=5 Т=4 У=2 Г=6 К=3 Н=7 А=0 Е=1 И=8</code><br>
+    Проверка: <code>58725 + 58725 + 3958725 == 4076175</code></p>
+
+    <h2>📊 Прогноз (25.03.26)</h2>
     <ul>
-        <li><a href="СетьВводный.pptx">📄 Скачать презентацию (.pptx)</a></li>
-        <li><a href="index.html">🌐 Открыть проверку кириллицы (.html)</a></li>
+        <li>Время подготовки: <strong>5 часов</strong></li>
+        <li>Прогнозируемый балл: <strong>50.23</strong></li>
     </ul>
 </div>
-
-<h2>🤖 Логи работы модели</h2>
-
-<h3>📅 16.02.26 — Топ-3 предсказания</h3>
-<ol>
-    <li><strong>Husky:</strong> <span class="highlight">75.46%</span></li>
-    <li>Siberian Husky: 23.30%</li>
-    <li>Alaskan Malamute: 1.00%</li>
-</ol>
-
-<h3>📅 16.02.26 — Лог Бот-FAQ</h3>
-<pre>
-Пользователь: Как оплатить заказ?
-[Система]: Найден вопрос (sim=0.941)
-Бот: Оплатить можно по QR-коду или по номеру телефона
-</pre>
-
-<h2>💭 Цитата</h2>
-<blockquote>
-    У каждого поколения есть свой философ... У нашего поколения есть философ. Он не художник и не писатель. Он программист.
-</blockquote>
-
-<h2>🧩 Решения криптоарифметики (25.02.26)</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Задача</th>
-            <th>Проверка</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <strong>ВОЛК + ЛИСА = ЗВЕРИ</strong><br>
-                <small>О=2 С=6 В=8 Р=5 К=3 А=4 З=1 Л=9 Е=0 И=7</small>
-            </td>
-            <td><code>8293 + 9764 = 18057</code></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>КТО + КОТ = ТОК</strong><br>
-                <small>О=5 К=4 Т=9</small>
-            </td>
-            <td><code>495 + 459 = 954</code></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>3 × КОШКА = СОБАКА</strong><br>
-                <small>О=6 С=1 Ш=3 К=5 А=0 Б=9</small>
-            </td>
-            <td><code>56350 × 3 = 169050</code></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>2×СИНУС + КОСИНУС = ТАНГЕНС</strong><br>
-                <small>О=9 С=5 Т=4 У=2 Г=6 К=3 Н=7 А=0 Е=1 И=8</small>
-            </td>
-            <td><code>58725×2 + 3958725 = 4076175</code></td>
-        </tr>
-    </tbody>
-</table>
-
-<h2>📊 Прогноз успеваемости (14.03.26)</h2>
-<ul>
-    <li>⏱ Время подготовки: 5 часов</li>
-    <li>🎯 <strong>Прогнозируемый балл: 50.23</strong></li>
-</ul>
 
 </body>
 </html>
