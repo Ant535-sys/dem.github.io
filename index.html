@@ -190,6 +190,23 @@
         .diff-positive { color: var(--success-color); font-weight: bold; }
         .diff-negative { color: var(--danger-color); font-weight: bold; }
 
+        /* Стили для дерева пациентов */
+        .tree-block {
+            background: #2d333b; /* Темный фон как в терминале */
+            color: #f6f8fa;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            overflow-x: auto;
+            border: 1px solid #444c56;
+            margin-top: 20px;
+        }
+        
+        .tree-block pre {
+            margin: 0;
+            white-space: pre; /* Сохраняет пробелы */
+        }
+
         /* Адаптивность */
         @media (max-width: 600px) {
             .container {
@@ -323,6 +340,20 @@
         <a href="Алгоритм.drawio.png" class="btn btn-secondary">🖼️ Алгоритм (31.03.26)</a>
         <a href="Диаграмма.drawio.png" class="btn btn-secondary">📊 Диаграмма (01.04.26)</a>
         <a href="Сравнительная таблица.csv" class="btn btn-secondary">📄 Таблица (.csv)</a>
+    </div>
+
+    <!-- НОВЫЙ БЛОК: ДЕРЕВО ПАЦИЕНТА -->
+    <h2>🏥 Структура данных пациента (Массив)</h2>
+    <p>Пример визуализации многомерного массива для пациента №2:</p>
+    
+    <div class="tree-block">
+        <pre>🏥 Приемный покой
+├── уникальный идентификатор: +7902B
+├── имя и фамилия: Анна Сидорова
+├── возраст: [28]
+├── город, улица: Санкт-Петербург, Невский проспект
+├── жалоба при поступлении: Головная боль
+└── приоритет: ❗ 2</pre>
     </div>
 
 </div>
