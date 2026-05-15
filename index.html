@@ -1,1 +1,490 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информационный сайт</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+        :root {
+            --bg-body: #f2f2f2;
+            --bg-card: #ffffff;
+            --text-main: #1f1f1f;       /* Почти черный для отличной читаемости */
+            --text-secondary: #5c5c5c;  
+            --border-color: #e0e0e0;
+            
+            /* Цвета иконок */
+            --icon-pptx: #d9534f;
+            --icon-html: #e67e22;
+            --icon-img:  #5dade2;
+            --icon-csv:  #27ae60;
+            --icon-xlsx: #1e8449;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            background: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .site-header h1 {
+            font-size: 2em;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== TOP SECTION (ВАЖНЫЕ ФАЙЛЫ) ===== */
+        .top-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            
+            /* Анимация появления */
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 0.8s ease forwards;
+        }
+
+        .top-section h2 {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .top-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: var(--text-main);
+            color: white !important;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .top-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        /* ===== DATE BLOCKS ===== */
+        .date-block {
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            
+            /* Анимация при скролле */
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .date-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .block-header {
+            background: #fafafa;
+            padding: 15px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .date-badge {
+            background: var(--text-main);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 700;
+        }
+
+        .block-title {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .block-content {
+            padding: 24px;
+        }
+
+        /* ===== FILE LIST STYLES ===== */
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        .download-btn:hover {
+            border-color: #bbb;
+            background: #fcfcfc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transform: translateX(5px);
+        }
+
+        .file-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.75em;
+            flex-shrink: 0;
+        }
+
+        .icon-pptx { background-color: var(--icon-pptx); }
+        .icon-html { background-color: var(--icon-html); }
+        .icon-img  { background-color: var(--icon-img); }
+        .icon-csv  { background-color: var(--icon-csv); }
+        .icon-xlsx { background-color: var(--icon-xlsx); }
+
+        .file-info { flex-grow: 1; }
+        .file-name { font-weight: 600; font-size: 0.95em; display: block; }
+        .file-desc { font-size: 0.85em; color: var(--text-secondary); }
+        
+        .arrow { color: #ccc; font-size: 1.2em; }
+
+        /* ===== OTHER CONTENT STYLES ===== */
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.95em; }
+        th, td { padding: 10px 14px; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: #f9f9f9; color: var(--text-secondary); font-size: 0.85em; text-transform: uppercase; }
+        
+        .log-box { background: #f8f9fa; border-left: 4px solid #ccc; padding: 15px; font-family: monospace; font-size: 0.9em; }
+        .code { background: #eee; padding: 2px 5px; border-radius: 3px; font-family: monospace; color: #d63384; }
+        .quote { font-style: italic; color: var(--text-secondary); border-left: 4px solid #ddd; padding-left: 15px; margin: 15px 0; }
+        
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 15px; }
+        .metric-card { background: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
+        .metric-val { font-size: 1.4em; font-weight: 700; color: var(--text-main); }
+
+        .tree-view { background: #2d333b; color: #adbac7; padding: 15px; border-radius: 6px; font-family: monospace; overflow-x: auto; }
+        .tree-hl { color: #fff; font-weight: bold; }
+
+        footer { text-align: center; color: #999; font-size: 0.9em; margin-top: 40px; }
+
+        @keyframes fadeInDown {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .top-buttons { flex-direction: column; }
+            .top-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>📚 Информационный портал</h1>
+</header>
+
+<div class="container">
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- ВЕРХНИЙ БЛОК: ОСНОВНЫЕ МАТЕРИАЛЫ           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="top-section">
+        <h2>⭐ Основные материалы проекта</h2>
+        <div class="top-buttons">
+            <a href="СетьВводный.pptx" class="top-btn">
+                📄 Скачать презентацию (.pptx)
+            </a>
+            <a href="index.html" class="top-btn" style="background: #555;">
+                🌐 Проверка кириллицы (.html)
+            </a>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- ХРОНОЛОГИЯ: ОТ РАННЕГО К ПОЗДНЕМУ          -->
+    <!-- ═══════════════════════════════════════════ -->
+
+    <!-- 1. 16.02.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">16.02.26</span>
+            <span class="block-title">Топ-3 предсказания</span>
+        </div>
+        <div class="block-content">
+            <table>
+                <thead><tr><th>Класс</th><th>Вероятность</th></tr></thead>
+                <tbody>
+                    <tr><td>Husky</td><td><strong>75.46%</strong></td></tr>
+                    <tr><td>Siberian Husky</td><td>23.30%</td></tr>
+                    <tr><td>Alaskan Malamute</td><td>1.00%</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. Архив / Без даты -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">Архив</span>
+            <span class="block-title">Логи, Цитаты и Задачи</span>
+        </div>
+        <div class="block-content">
+            <div class="log-box" style="margin-bottom: 20px;">
+                <p><strong>❓ Вопрос:</strong> Как оплатить заказ?</p>
+                <p style="color:#777; font-size:0.85em;">System: sim=0.941</p>
+                <p><strong>✅ Ответ:</strong> По QR-коду или телефону</p>
+            </div>
+            
+            <blockquote class="quote">
+                «У нашего поколения есть философ. Он не художник и не писатель. Он программист.»
+            </blockquote>
+
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
+                <p style="font-weight:600;">🧩 Криптоарифметика: ВОЛК + ЛИСА == ЗВЕРИ</p>
+                <p><span class="code">О=2 С=6 В=8 Р=5 К=3 А=4 З=1 Л=9 Е=0 И=7</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 14.03.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">14.03.26</span>
+            <span class="block-title">Прогноз и Регрессия</span>
+        </div>
+        <div class="block-content">
+            <ul style="list-style:none; margin-bottom:15px;">
+                <li>⏱️ Подготовка: <strong>5 часов</strong></li>
+                <li>🎯 Балл: <strong>50.23</strong></li>
+            </ul>
+            <div class="metrics">
+                <div class="metric-card"><div style="font-size:0.8em; color:#777;">MSE Train</div><div class="metric-val">0.0044</div></div>
+                <div class="metric-card"><div style="font-size:0.8em; color:#777;">MSE Test</div><div class="metric-val">0.0039</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. 21.03.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">21.03.26</span>
+            <span class="block-title">Кредитный скоринг</span>
+        </div>
+        <div class="block-content">
+            <div class="metrics">
+                <div class="metric-card"><div style="font-size:0.8em; color:#777;">Выдача кредита</div><div class="metric-val">0.69</div></div>
+                <div class="metric-card"><div style="font-size:0.8em; color:#777;">КАСКО</div><div class="metric-val" style="color:green;">1.0</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 31.03.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">31.03.26</span>
+            <span class="block-title">Алгоритм</span>
+        </div>
+        <div class="block-content">
+            <a href="Алгоритм.drawio.png" class="download-btn">
+                <div class="file-icon icon-img">IMG</div>
+                <div class="file-info">
+                    <span class="file-name">Алгоритм.drawio.png</span>
+                    <span class="file-desc">Блок-схема алгоритма</span>
+                </div>
+                <span class="arrow">↓</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 6. 01.04.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">01.04.26</span>
+            <span class="block-title">Диаграммы и таблицы</span>
+        </div>
+        <div class="block-content">
+            <div class="file-list">
+                <a href="Диаграмма.drawio.png" class="download-btn">
+                    <div class="file-icon icon-img">IMG</div>
+                    <div class="file-info">
+                        <span class="file-name">Диаграмма.drawio.png</span>
+                    </div>
+                    <span class="arrow">↓</span>
+                </a>
+                <a href="Сравнительная таблица.csv" class="download-btn">
+                    <div class="file-icon icon-csv">CSV</div>
+                    <div class="file-info">
+                        <span class="file-name">Сравнительная таблица.csv</span>
+                    </div>
+                    <span class="arrow">↓</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. 04.04.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">04.04.26</span>
+            <span class="block-title">База данных (Общая)</span>
+        </div>
+        <div class="block-content">
+            <a href="База данных.drawio.png" class="download-btn">
+                <div class="file-icon icon-img">DB</div>
+                <div class="file-info">
+                    <span class="file-name">База данных.drawio.png</span>
+                </div>
+                <span class="arrow">↓</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 8. 11.04.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">11.04.26</span>
+            <span class="block-title">Стоматология</span>
+        </div>
+        <div class="block-content">
+            <div class="tree-view" style="margin-bottom: 15px;">
+<pre>🏥 Пациент №2
+├── <span class="tree-hl">ID:</span> +7902B
+├── <span class="tree-hl">ФИО:</span> Анна Сидорова
+└── <span class="tree-hl">Приоритет:</span> ❗ 2</pre>
+            </div>
+            <a href="База данных стоматологии.drawio.png" class="download-btn">
+                <div class="file-icon icon-img">IMG</div>
+                <div class="file-info">
+                    <span class="file-name">База данных стоматологии.drawio.png</span>
+                </div>
+                <span class="arrow">↓</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 9. 04.05.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">04.05.26</span>
+            <span class="block-title">Пакет таблиц (Май)</span>
+        </div>
+        <div class="block-content">
+            <div class="file-list">
+                <a href="Таблица 1.xlsx" class="download-btn">
+                    <div class="file-icon icon-xlsx">XLS</div>
+                    <div class="file-info"><span class="file-name">Таблица 1.xlsx</span></div>
+                    <span class="arrow">↓</span>
+                </a>
+                <a href="Таблица 2.xlsx" class="download-btn">
+                    <div class="file-icon icon-xlsx">XLS</div>
+                    <div class="file-info"><span class="file-name">Таблица 2.xlsx</span></div>
+                    <span class="arrow">↓</span>
+                </a>
+                <a href="Таблица 3.xlsx" class="download-btn">
+                    <div class="file-icon icon-xlsx">XLS</div>
+                    <div class="file-info"><span class="file-name">Таблица 3.xlsx</span></div>
+                    <span class="arrow">↓</span>
+                </a>
+                <a href="Таблица 4.xlsx" class="download-btn">
+                    <div class="file-icon icon-xlsx">XLS</div>
+                    <div class="file-info"><span class="file-name">Таблица 4.xlsx</span></div>
+                    <span class="arrow">↓</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. 15.05.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">15.05.26</span>
+            <span class="block-title">Актуальное обновление</span>
+        </div>
+        <div class="block-content">
+            <a href="Сравнительная таблица.csv" class="download-btn">
+                <div class="file-icon icon-csv">CSV</div>
+                <div class="file-info">
+                    <span class="file-name">Сравнительная таблица.csv</span>
+                    <span class="file-desc">Финальная версия</span>
+                </div>
+                <span class="arrow">↓</span>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2026 Информационный сайт</p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.date-block').forEach(block => {
+            observer.observe(block);
+        });
+    });
+</script>
+
+</body>
+                                                    </html>
