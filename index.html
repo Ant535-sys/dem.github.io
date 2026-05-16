@@ -3,444 +3,716 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Repository</title>
+    <title>Информационный сайт</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
         :root {
-            --color-canvas-default: #ffffff;
-            --color-canvas-subtle: #f6f8fa;
-            --color-border-default: #d0d7de;
-            --color-border-muted: #d8dee4;
-            --color-fg-default: #24292f;
-            --color-fg-muted: #57606a;
-            --color-accent-fg: #0969da;
-            --color-success-fg: #1a7f37;
-            --color-danger-fg: #cf222e;
-            --btn-bg: #f6f8fa;
-            --btn-border: rgba(27,31,35,0.15);
-            --btn-hover-bg: #f3f4f6;
+            /* Градиентный фон: серый → белый */
+            --bg-gradient: linear-gradient(180deg, #e8e8e8 0%, #f8f9fa 40%, #ffffff 100%);
+            --bg-card: rgba(255, 255, 255, 0.92);
+            --bg-card-hover: rgba(255, 255, 255, 0.98);
+            --text-main: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --border-color: #d0d0d0;
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+            
+            /* Цвета иконок */
+            --icon-pptx: #d9534f;
+            --icon-html: #e67e22;
+            --icon-img:  #5dade2;
+            --icon-csv:  #27ae60;
+            --icon-xlsx: #1e8449;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-            background-color: var(--color-canvas-subtle);
-            color: var(--color-fg-default);
-            margin: 0;
-            padding: 0;
-            line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+            min-height: 100vh;
+            /* Плавная анимация фона */
+            animation: bgPulse 20s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .site-header h1 {
+            font-size: 2em;
+            font-weight: 800;
+            color: var(--text-main);
+            background: linear-gradient(135deg, #1a1a1a, #4a4a4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .container {
-            max-width: 980px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 24px;
+            padding: 0 20px;
         }
 
-        /* Верхний блок с главными файлами */
-        .top-actions {
-            background: #fff;
-            border: 1px solid var(--color-border-default);
-            border-radius: 6px;
-            padding: 16px;
-            margin-bottom: 24px;
+        /* ===== TOP SECTION ===== */
+        .top-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .top-section:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .top-section h2 {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .top-buttons {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            animation: fadeInDown 0.6s ease-out;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
-        .repo-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--color-accent-fg);
-            margin: 0;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        /* Стиль кнопок GitHub */
-        .btn {
+        .top-btn {
             display: inline-flex;
             align-items: center;
-            padding: 5px 16px;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 20px;
-            white-space: nowrap;
-            vertical-align: middle;
-            cursor: pointer;
-            user-select: none;
-            border: 1px solid var(--btn-border);
-            border-radius: 6px;
-            background-color: var(--btn-bg);
-            color: var(--color-fg-default);
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #2a2a2a, #4a4a4a);
+            color: white !important;
+            border-radius: 10px;
             text-decoration: none;
-            transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
-            box-shadow: 0 1px 0 rgba(27,31,35,0.04), inset 0 1px 0 rgba(255,255,255,0.25);
-        }
-
-        .btn:hover {
-            background-color: var(--btn-hover-bg);
-            border-color: rgba(27,31,35,0.15);
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background-color: #2da44e;
-            color: #ffffff;
-            border-color: rgba(27,31,35,0.15);
-        }
-
-        .btn-primary:hover {
-            background-color: #2c974b;
-        }
-
-        /* Основной контент */
-        .content-wrapper {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
-
-        .card {
-            background: var(--color-canvas-default);
-            border: 1px solid var(--color-border-default);
-            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
             overflow: hidden;
-            opacity: 0; /* Для анимации */
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .card.is-visible {
+        .top-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .top-btn:hover::before {
+            left: 100%;
+        }
+
+        .top-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .top-btn[style*="background: #555"] {
+            background: linear-gradient(135deg, #5a5a5a, #7a7a7a) !important;
+        }
+
+        /* ===== DATE BLOCKS ===== */
+        .date-block {
+            background: var(--bg-card);
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: var(--shadow-soft);
+            will-change: transform, opacity;
+        }
+
+        .date-block.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
-        .card-header {
-            padding: 16px;
-            background-color: var(--color-canvas-subtle);
-            border-bottom: 1px solid var(--color-border-default);
+        .date-block:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px) scale(1.005);
+        }
+
+        .block-header {
+            background: linear-gradient(135deg, #f5f5f5, #fafafa);
+            padding: 15px 24px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-        }
-
-        .card-header h2 {
-            margin: 0;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--color-fg-default);
+            gap: 15px;
         }
 
         .date-badge {
-            font-size: 12px;
-            color: var(--color-fg-muted);
-            font-family: monospace;
+            background: linear-gradient(135deg, #333, #555);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
-        .card-body {
-            padding: 16px;
-        }
-
-        /* Таблицы */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        th {
-            text-align: left;
+        .block-title {
             font-weight: 600;
-            color: var(--color-fg-default);
-            background-color: var(--color-canvas-subtle);
-            border-top: 1px solid var(--color-border-muted);
-            border-bottom: 1px solid var(--color-border-muted);
-            padding: 6px 13px;
+            color: var(--text-main);
         }
 
-        td {
-            padding: 6px 13px;
-            border-bottom: 1px solid var(--color-border-muted);
+        .block-content {
+            padding: 24px;
         }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* Лог и код */
-        .log-box {
-            background-color: #f6f8fa;
-            border: 1px solid #d0d7de;
-            border-radius: 6px;
-            padding: 16px;
-            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-            font-size: 12px;
-            color: #24292f;
-        }
-
-        .code-block {
-            background-color: #f6f8fa;
-            padding: 8px;
-            border-radius: 6px;
-            font-family: ui-monospace, monospace;
-            font-size: 85%;
-        }
-
-        .tree-view {
-            background: #24292f;
-            color: #e6edf3;
-            padding: 16px;
-            border-radius: 6px;
-            font-family: ui-monospace, monospace;
-            font-size: 13px;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        /* Метрики */
-        .metrics-row {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-        
-        .metric-item {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            border: 1px solid var(--color-border-default);
-            border-radius: 6px;
-        }
-
-        .metric-val {
-            display: block;
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--color-fg-default);
-        }
-
-        .diff-pos { color: var(--color-success-fg); }
-        .diff-neg { color: var(--color-danger-fg); }
-
-        /* Блок файлов внутри карточки */
+        /* ===== FILE LIST STYLES ===== */
         .file-list {
-            margin-top: 15px;
-            border-top: 1px solid var(--color-border-default);
-            padding-top: 10px;
-        }
-        
-        .file-link {
-            display: block;
-            padding: 8px;
-            color: var(--color-accent-fg);
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        .file-link:hover {
-            background-color: var(--color-canvas-subtle);
-            text-decoration: underline;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
+        .download-btn {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(90,90,90,0.03), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .download-btn:hover {
+            border-color: #b0b0b0;
+            background: var(--bg-card-hover);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transform: translateX(6px);
+        }
+
+        .download-btn:hover::after {
+            opacity: 1;
+        }
+
+        .file-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.75em;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .download-btn:hover .file-icon {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .icon-pptx { background: linear-gradient(135deg, var(--icon-pptx), #c0392b); }
+        .icon-html { background: linear-gradient(135deg, var(--icon-html), #d35400); }
+        .icon-img  { background: linear-gradient(135deg, var(--icon-img), #3498db); }
+        .icon-csv  { background: linear-gradient(135deg, var(--icon-csv), #229954); }
+        .icon-xlsx { background: linear-gradient(135deg, var(--icon-xlsx), #196f3d); }
+
+        .file-info { flex-grow: 1; }
+        .file-name { font-weight: 600; font-size: 0.95em; display: block; }
+        .file-desc { font-size: 0.85em; color: var(--text-secondary); }
+        .arrow { 
+            color: #aaa; 
+            font-size: 1.2em; 
+            transition: transform 0.3s ease, color 0.3s; 
+        }
+        .download-btn:hover .arrow {
+            transform: translateX(3px);
+            color: #666;
+        }
+
+        /* ===== OTHER CONTENT STYLES ===== */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 10px 0; 
+            font-size: 0.95em; 
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        th, td { padding: 12px 14px; border-bottom: 1px solid #eee; text-align: left; }
+        th { 
+            background: linear-gradient(135deg, #f0f0f0, #e8e8e8); 
+            color: var(--text-secondary); 
+            font-size: 0.85em; 
+            text-transform: uppercase; 
+            font-weight: 600;
+        }
+        tbody tr {
+            transition: background 0.2s;
+        }
+        tbody tr:hover {
+            background: #fafafa;
+        }
+        
+        .log-box { 
+            background: linear-gradient(135deg, #f8f9fa, #fff); 
+            border-left: 4px solid #666; 
+            padding: 15px; 
+            font-family: monospace; 
+            font-size: 0.9em; 
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .code { 
+            background: linear-gradient(135deg, #e8e8e8, #f0f0f0); 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            font-family: monospace; 
+            color: #c0392b; 
+            font-weight: 500;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .quote { 
+            font-style: italic; 
+            color: var(--text-secondary); 
+            border-left: 4px solid #ccc; 
+            padding-left: 15px; 
+            margin: 15px 0; 
+            background: rgba(255,255,255,0.6);
+            padding: 12px 15px 12px 19px;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .metrics { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 15px; 
+            margin-top: 15px; 
+        }
+        .metric-card { 
+            background: linear-gradient(135deg, #fafafa, #fff); 
+            padding: 15px; 
+            border-radius: 10px; 
+            text-align: center; 
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #ddd;
+        }
+        .metric-val { 
+            font-size: 1.4em; 
+            font-weight: 700; 
+            color: var(--text-main); 
+        }
+
+        .tree-view { 
+            background: linear-gradient(135deg, #2d333b, #3a414a); 
+            color: #adbac7; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-family: monospace; 
+            overflow-x: auto; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .tree-hl { color: #fff; font-weight: bold; }
+
+        footer { 
+            text-align: center; 
+            color: #888; 
+            font-size: 0.9em; 
+            margin-top: 40px; 
+            padding: 20px;
+            animation: fadeIn 1s ease 1s forwards;
+            opacity: 0;
+        }
+
+        /* ===== KEYFRAME ANIMATIONS ===== */
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-10px); }
+            from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Анимация парения для карточек при наведении */
+        .date-block.visible {
+            animation: float 6s ease-in-out infinite;
+        }
+        .date-block.visible:hover {
+            animation-play-state: paused;
+        }
+
+        /* Плавное появление элементов внутри блоков */
+        .block-content > * {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        .block-content > *:nth-child(1) { animation-delay: 0.1s; }
+        .block-content > *:nth-child(2) { animation-delay: 0.2s; }
+        .block-content > *:nth-child(3) { animation-delay: 0.3s; }
+        .block-content > *:nth-child(4) { animation-delay: 0.4s; }
+
         @media (max-width: 600px) {
-            .top-actions {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-            .action-buttons {
-                width: 100%;
-                flex-direction: column;
-            }
-            .btn { width: 100%; justify-content: center; box-sizing: border-box; }
+            .top-buttons { flex-direction: column; }
+            .top-btn { width: 100%; justify-content: center; }
+            .site-header h1 { font-size: 1.5em; }
+        }
+
+        /* Улучшенная читаемость: фокус на текстах */
+        h1, h2, h3, .file-name, .block-title {
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
+        
+        /* Плавный скролл */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
 
+<header class="site-header">
+    <h1>📚 Информационный портал</h1>
+</header>
+
 <div class="container">
 
-    <!-- ВЕРХНИЙ БЛОК С ГЛАВНЫМИ ФАЙЛАМИ -->
-    <div class="top-actions">
-        <h1 class="repo-title">📂 Project Dashboard</h1>
-        <div class="action-buttons">
-            <a href="СетьВводный.pptx" class="btn btn-primary">
-                <svg height="16" width="16" viewBox="0 0 16 16" style="margin-right: 5px;"><path fill="currentColor" d="M2 2.75A2.75 2.75 0 0 1 4.75 0h2.5a.75.75 0 0 1 0 1.5h-2.5a1.25 1.25 0 0 0-1.25 1.25v10.5a1.25 1.25 0 0 0 1.25 1.25h8.5a1.25 1.25 0 0 0 1.25-1.25V8.75a.75.75 0 0 1 1.5 0v4.5a2.75 2.75 0 0 1-2.75 2.75h-8.5a2.75 2.75 0 0 1-2.75-2.75v-10.5Z"></path><path fill="currentColor" d="M13.5 2.75a.75.75 0 0 0-1.5 0v1.5a.75.75 0 0 0 1.5 0v-1.5Z"></path></svg>
-                Скачать презентацию
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- ВЕРХНИЙ БЛОК: ОСНОВНЫЕ МАТЕРИАЛЫ           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="top-section">
+        <h2>⭐ Основные материалы проекта</h2>
+        <div class="top-buttons">
+            <a href="СетьВводный.pptx" class="top-btn">
+                📄 Скачать презентацию (.pptx)
             </a>
-            <a href="index.html" class="btn">
-                <svg height="16" width="16" viewBox="0 0 16 16" style="margin-right: 5px;"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg>
-                Проверка кириллицы
+            <a href="index.html" class="top-btn" style="background: #555;">
+                🌐 Проверка кириллицы (.html)
             </a>
         </div>
     </div>
 
-    <div class="content-wrapper">
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- ХРОНОЛОГИЯ: ОТ РАННЕГО К ПОЗДНЕМУ          -->
+    <!-- ═══════════════════════════════════════════ -->
 
-        <!-- 16 ФЕВРАЛЯ -->
-        <article class="card fade-in-section">
-            <div class="card-header">
-                <h2>🔮 Предсказания модели (Husky)</h2>
-                <span class="date-badge">16.02.26</span>
-            </div>
-            <div class="card-body">
-                <table>
-                    <thead>
-                        <tr><th>Класс</th><th>Вероятность</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Husky</td><td><strong>75.46%</strong></td></tr>
-                        <tr><td>Siberian Husky</td><td>23.30%</td></tr>
-                        <tr><td>Alaskan Malamute</td><td>1.00%</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </article>
-
-        <!-- 14 МАРТА -->
-        <article class="card fade-in-section">
-            <div class="card-header">
-                <h2>🤖 Логи бота и Прогнозы</h2>
-                <span class="date-badge">14.03.26</span>
-            </div>
-            <div class="card-body">
-                <div class="log-box">
-                    <p><strong>❓ User:</strong> Как оплатить заказ?</p>
-                    <p style="color: #57606a;">System: Найден FAQ-вопрос (sim=0.941)</p>
-                    <p><strong>✅ Bot:</strong> Оплатить можно по QR-коду или по номеру телефона</p>
-                </div>
-                <br>
-                <blockquote style="border-left: 4px solid #d0d7de; padding-left: 10px; color: #57606a;">
-                    «У каждого поколения есть свой философ... Он программист.»
-                </blockquote>
-                <hr style="border: 0; border-top: 1px solid #d0d7de; margin: 15px 0;">
-                <ul style="list-style: none; padding: 0;">
-                    <li>⏱️ Время подготовки: <strong>5 часов</strong></li>
-                    <li>🎯 Прогнозируемый балл: <strong>50.23</strong></li>
-                </ul>
-            </div>
-        </article>
-
-        <!-- 21 МАРТА -->
-        <article class="card fade-in-section">
-            <div class="card-header">
-                <h2>💳 Кредитный скоринг</h2>
-                <span class="date-badge">21.03.26</span>
-            </div>
-            <div class="card-body">
-                <div class="metrics-row">
-                    <div class="metric-item">
-                        <small>Точность кредита</small>
-                        <span class="metric-val">0.69</span>
-                    </div>
-                    <div class="metric-item">
-                        <small>КАСКО решение</small>
-                        <span class="metric-val" style="color: #1a7f37;">1.0</span>
-                    </div>
-                </div>
-                <div class="file-list">
-                    <a href="Алгоритм.drawio.png" class="file-link">📎 Алгоритм.drawio.png (31.03.26)</a>
-                </div>
-            </div>
-        </article>
-
-        <!-- 1 АПРЕЛЯ - 11 АПРЕЛЯ -->
-        <article class="card fade-in-section">
-            <div class="card-header">
-                <h2>📊 Диаграммы и Криптоарифметика</h2>
-                <span class="date-badge">01.04.26 - 11.04.26</span>
-            </div>
-            <div class="card-body">
-                <div class="code-block" style="margin-bottom: 10px;">
-                    ВОЛК + ЛИСА == ЗВЕРИ<br>
-                    <span style="color: #1a7f37;">8293 + 9764 == 18057</span>
-                </div>
-                <div class="code-block" style="margin-bottom: 10px;">
-                    КОШКА * 3 == СОБАКА<br>
-                    <span style="color: #1a7f37;">56350 * 3 == 169050</span>
-                </div>
-                
-                <div class="file-list">
-                    <a href="Диаграмма.drawio.png" class="file-link">📎 Диаграмма.drawio.png (01.04.26)</a>
-                    <a href="Сравнительная таблица.csv" class="file-link">📎 Сравнительная таблица.csv (01.04.26)</a>
-                    <a href="База данных.drawio.png" class="file-link">📎 База данных.drawio.png (04.04.26)</a>
-                    <a href="База данных стоматологии.drawio.png" class="file-link">📎 База данных стоматологии.drawio.png (11.04.26)</a>
-                </div>
-            </div>
-        </article>
-
-        <!-- 4 МАЯ -->
-        <article class="card fade-in-section">
-            <div class="card-header">
-                <h2>📉 Регрессия и Отчеты Excel</h2>
-                <span class="date-badge">04.05.26</span>
-            </div>
-            <div class="card-body">
-                <table>
-                    <thead>
-                        <tr><th>Факт</th><th>Прогноз</th><th>Diff</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>91.0</td><td>78.4</td><td class="diff-neg">−12.6</td></tr>
-                        <tr><td>80.0</td><td>77.5</td><td class="diff-pos">+2.5</td></tr>
-                    </tbody>
-                </table>
-                <div class="file-list">
-                    <a href="Таблица 1.xlsx" class="file-link">📥 Таблица 1.xlsx</a>
-                    <a href="Таблица 2.xlsx" class="file-link">📥 Таблица 2.xlsx</a>
-                    <a href="Таблица 3.xlsx" class="file-link">📥 Таблица 3.xlsx</a>
-                    <a href="Таблица 4.xlsx" class="file-link">📥 Таблица 4.xlsx</a>
-                </div>
-            </div>
-        </article>
-
-        <!-- 15 МАЯ -->
-        <article class="card fade-in-section">
-            <div class="card-header">
-                <h2>🏥 Структура данных (Пациент)</h2>
-                <span class="date-badge">15.05.26</span>
-            </div>
-            <div class="card-body">
-                <div class="tree-view">
-🏥 Приемный покой
-├── ID: +7902B
-├── Имя: Анна Сидорова
-├── Возраст: [28]
-├── Адрес: Санкт-Петербург, Невский проспект
-├── Жалоба: Головная боль
-└── Приоритет: ❗ 2
-                </div>
-                <div class="file-list">
-                    <a href="Сравнительная таблица.csv" class="file-link">📎 Сравнительная таблица v2.csv (15.05.26)</a>
-                </div>
-            </div>
-        </article>
-
+    <!-- 1. 16.02.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">16.02.26</span>
+            <span class="block-title">Топ-3 предсказания</span>
+        </div>
+        <div class="block-content">
+            <table>
+                <thead><tr><th>Класс</th><th>Вероятность</th></tr></thead>
+                <tbody>
+                    <tr><td>Husky</td><td><strong>75.46%</strong></td></tr>
+                    <tr><td>Siberian Husky</td><td>23.30%</td></tr>
+                    <tr><td>Alaskan Malamute</td><td>1.00%</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <!-- 2. Архив / Без даты -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">Архив</span>
+            <span class="block-title">Логи, Цитаты и Задачи</span>
+        </div>
+        <div class="block-content">
+            <div class="log-box" style="margin-bottom: 20px;">
+                <p><strong>❓ Вопрос:</strong> Как оплатить заказ?</p>
+                <p style="color:#777; font-size:0.85em;">System: sim=0.941</p>
+                <p><strong>✅ Ответ:</strong> По QR-коду или телефону</p>
+            </div>
+            
+            <blockquote class="quote">
+                «У нашего поколения есть философ. Он не художник и не писатель. Он программист.»
+            </blockquote>
+
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
+                <p style="font-weight:600;">🧩 Криптоарифметика: ВОЛК + ЛИСА == ЗВЕРИ</p>
+                <p><span class="code">О=2 С=6 В=8 Р=5 К=3 А=4 З=1 Л=9 Е=0 И=7</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 14.03.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">14.03.26</span>
+            <span class="block-title">Прогноз и Регрессия</span>
+        </div>
+        <div class="block-content">
+            <ul style="list-style:none; margin-bottom:15px;">
+                <li>⏱️ Подготовка: <strong>5 часов</strong></li>
+                <li>🎯 Балл: <strong>50.23</strong></li>
+            </ul>
+            <div class="metrics">
+                <div class="metric-card"><div style="font-size:0.8em; color:#777;">MSE Train</div><div class="metric-val">0.0044</div></div>
+                <div class="metric-card"><div style="font-size:0.8em; color:#777;">MSE Test</div><div class="metric-val">0.0039</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. 21.03.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">21.03.26</span>
+            <span class="block-title">Кредитный скоринг</span>
+        </div>
+        <div class="block-content">
+            <div class="metrics">
+                <div class="metric-card"><div style="font-size:0.8em; color:#777;">Выдача кредита</div><div class="metric-val">0.69</div></div>
+                <div class="metric-card"><div style="font-size:0.8em; color:#777;">КАСКО</div><div class="metric-val" style="color:green;">1.0</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 31.03.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">31.03.26</span>
+            <span class="block-title">Алгоритм</span>
+        </div>
+        <div class="block-content">
+            <a href="Алгоритм.drawio.png" class="download-btn">
+                <div class="file-icon icon-img">IMG</div>
+                <div class="file-info">
+                    <span class="file-name">Алгоритм.drawio.png</span>
+                    <span class="file-desc">Блок-схема алгоритма</span>
+                </div>
+                <span class="arrow">↓</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 6. 01.04.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">01.04.26</span>
+            <span class="block-title">Диаграммы и таблицы</span>
+        </div>
+        <div class="block-content">
+            <div class="file-list">
+                <a href="Диаграмма.drawio.png" class="download-btn">
+                    <div class="file-icon icon-img">IMG</div>
+                    <div class="file-info">
+                        <span class="file-name">Диаграмма.drawio.png</span>
+                    </div>
+                    <span class="arrow">↓</span>
+                </a>
+                <a href="Сравнительная таблица.csv" class="download-btn">
+                    <div class="file-icon icon-csv">CSV</div>
+                    <div class="file-info">
+                        <span class="file-name">Сравнительная таблица.csv</span>
+                    </div>
+                    <span class="arrow">↓</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. 04.04.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">04.04.26</span>
+            <span class="block-title">База данных (Общая)</span>
+        </div>
+        <div class="block-content">
+            <a href="База данных.drawio.png" class="download-btn">
+                <div class="file-icon icon-img">DB</div>
+                <div class="file-info">
+                    <span class="file-name">База данных.drawio.png</span>
+                </div>
+                <span class="arrow">↓</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 8. 11.04.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">11.04.26</span>
+            <span class="block-title">Стоматология</span>
+        </div>
+        <div class="block-content">
+            <div class="tree-view" style="margin-bottom: 15px;">
+<pre>🏥 Пациент №2
+├── <span class="tree-hl">ID:</span> +7902B
+├── <span class="tree-hl">ФИО:</span> Анна Сидорова
+└── <span class="tree-hl">Приоритет:</span> ❗ 2</pre>
+            </div>
+            <a href="База данных стоматологии.drawio.png" class="download-btn">
+                <div class="file-icon icon-img">IMG</div>
+                <div class="file-info">
+                    <span class="file-name">База данных стоматологии.drawio.png</span>
+                </div>
+                <span class="arrow">↓</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 9. 04.05.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">04.05.26</span>
+            <span class="block-title">Пакет таблиц (Май)</span>
+        </div>
+        <div class="block-content">
+            <div class="file-list">
+                <a href="Таблица 1.xlsx" class="download-btn">
+                    <div class="file-icon icon-xlsx">XLS</div>
+                    <div class="file-info"><span class="file-name">Таблица 1.xlsx</span></div>
+                    <span class="arrow">↓</span>
+                </a>
+                <a href="Таблица 2.xlsx" class="download-btn">
+                    <div class="file-icon icon-xlsx">XLS</div>
+                    <div class="file-info"><span class="file-name">Таблица 2.xlsx</span></div>
+                    <span class="arrow">↓</span>
+                </a>
+                <a href="Таблица 3.xlsx" class="download-btn">
+                    <div class="file-icon icon-xlsx">XLS</div>
+                    <div class="file-info"><span class="file-name">Таблица 3.xlsx</span></div>
+                    <span class="arrow">↓</span>
+                </a>
+                <a href="Таблица 4.xlsx" class="download-btn">
+                    <div class="file-icon icon-xlsx">XLS</div>
+                    <div class="file-info"><span class="file-name">Таблица 4.xlsx</span></div>
+                    <span class="arrow">↓</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. 15.05.26 -->
+    <div class="date-block">
+        <div class="block-header">
+            <span class="date-badge">15.05.26</span>
+            <span class="block-title">Актуальное обновление</span>
+        </div>
+        <div class="block-content">
+            <a href="Сравнительная таблица.csv" class="download-btn">
+                <div class="file-icon icon-csv">CSV</div>
+                <div class="file-info">
+                    <span class="file-name">Сравнительная таблица.csv</span>
+                    <span class="file-desc">Финальная версия</span>
+                </div>
+                <span class="arrow">↓</span>
+            </a>
+        </div>
+    </div>
+
 </div>
+
+<footer>
+    <p>© 2026 Информационный сайт</p>
+</footer>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // Intersection Observer для анимации при скролле
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
+                    // Добавляем задержку для каскадного появления
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-        document.querySelectorAll('.fade-in-section').forEach(section => {
-            observer.observe(section);
+        document.querySelectorAll('.date-block').forEach(block => {
+            observer.observe(block);
+        });
+
+        // Плавное появление хедера при загрузке
+        setTimeout(() => {
+            document.querySelector('.site-header').style.opacity = '1';
+        }, 100);
+
+        // Эффект параллакса для фона (опционально)
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.body.style.backgroundPositionY = `${scrolled * 0.3}px`;
         });
     });
 </script>
