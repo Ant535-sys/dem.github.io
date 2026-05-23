@@ -3,778 +3,659 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Информационный сайт</title>
+    <title>Монохромный Портфолио</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
         :root {
-            /* Градиентный фон: серый → белый */
-            --bg-gradient: linear-gradient(180deg, #e8e8e8 0%, #f8f9fa 40%, #ffffff 100%);
-            --bg-card: rgba(255, 255, 255, 0.92);
-            --bg-card-hover: rgba(255, 255, 255, 0.98);
-            --text-main: #1a1a1a;
-            --text-secondary: #4a4a4a;
-            --border-color: #d0d0d0;
-            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+            /* Monochrome Palette */
+            --bg-body: #f5f5f7;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: #ffffff;
             
-            /* Цвета иконок */
-            --icon-pptx: #d9534f;
-            --icon-html: #e67e22;
-            --icon-img:  #5dade2;
-            --icon-csv:  #27ae60;
-            --icon-xlsx: #1e8449;
+            --text-main: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-muted: #aeaeb2;
+            
+            --border-light: rgba(0, 0, 0, 0.06);
+            --border-hover: rgba(0, 0, 0, 0.12);
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
+            
+            /* Grayscale Accents for Icons/Tags */
+            --accent-dark: #333333;
+            --accent-mid: #888888;
+            --accent-light: #e5e5e5;
+            
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-pill: 50px;
+            
+            --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
+            background-color: var(--bg-body);
+            /* Subtle noise texture overlay */
+            background-image: radial-gradient(#d1d1d6 1px, transparent 1px);
+            background-size: 24px 24px;
             color: var(--text-main);
             line-height: 1.6;
-            padding-bottom: 60px;
             min-height: 100vh;
-            /* Плавная анимация фона */
-            animation: bgPulse 20s ease-in-out infinite;
-        }
-
-        @keyframes bgPulse {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        /* ===== HEADER ===== */
-        .site-header {
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-            padding: 40px 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            animation: slideDown 0.6s ease-out;
-        }
-
-        .site-header h1 {
-            font-size: 2em;
-            font-weight: 800;
-            color: var(--text-main);
-            background: linear-gradient(135deg, #1a1a1a, #4a4a4a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
         }
 
-        /* ===== TOP SECTION ===== */
-        .top-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: var(--shadow-soft);
+        /* ===== HEADER ===== */
+        header {
             text-align: center;
-            opacity: 0;
-            transform: translateY(-30px);
-            animation: fadeInUp 0.8s ease forwards 0.2s;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s var(--ease-out);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #000 0%, #555 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ===== TOP SECTION (Hero Card) ===== */
+        .hero-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid #fff;
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 50px;
+            animation: fadeInUp 0.8s var(--ease-out) 0.1s backwards;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .top-section:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
+        .hero-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .top-section h2 {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            color: var(--text-secondary);
+        .hero-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text-main);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .top-buttons {
+        .btn-group {
             display: flex;
             justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
         }
 
-        .top-btn {
+        .btn {
             display: inline-flex;
             align-items: center;
+            gap: 10px;
             padding: 12px 24px;
-            background: linear-gradient(135deg, #2a2a2a, #4a4a4a);
-            color: white !important;
-            border-radius: 10px;
+            background: var(--text-main);
+            color: #fff;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
+            border-radius: var(--radius-pill);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .top-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+        .btn.secondary {
+            background: #fff;
+            color: var(--text-main);
+            border: 1px solid var(--border-hover);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        .top-btn:hover::before {
-            left: 100%;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn.secondary:hover {
+            background: #f9f9f9;
+            border-color: var(--text-main);
         }
 
-        .top-btn:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-
-        .top-btn[style*="background: #555"] {
-            background: linear-gradient(135deg, #5a5a5a, #7a7a7a) !important;
-        }
-
-        /* ===== DATE BLOCKS ===== */
-        .date-block {
+        /* ===== TIMELINE / CARDS ===== */
+        .timeline-item {
             background: var(--bg-card);
-            border-radius: 16px;
-            margin-bottom: 25px;
-            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: var(--shadow-sm);
             overflow: hidden;
             opacity: 0;
-            transform: translateY(40px) scale(0.98);
-            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-            box-shadow: var(--shadow-soft);
-            will-change: transform, opacity;
+            transform: translateY(30px);
+            transition: all 0.6s var(--ease-out);
+            position: relative;
         }
 
-        .date-block.visible {
+        .timeline-item.visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
 
-        .date-block:hover {
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-2px) scale(1.005);
+        .timeline-item:hover {
+            box-shadow: var(--shadow-md);
+            border-color: #fff;
         }
 
-        .block-header {
-            background: linear-gradient(135deg, #f5f5f5, #fafafa);
-            padding: 15px 24px;
-            border-bottom: 1px solid var(--border-color);
+        /* Top accent line for cards */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #e0e0e0, #999, #e0e0e0);
+            opacity: 0.5;
+        }
+
+        .card-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-light);
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.4);
         }
 
         .date-badge {
-            background: linear-gradient(135deg, #333, #555);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 0.8em;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--accent-light);
+            padding: 6px 12px;
+            border-radius: 8px;
         }
 
-        .block-title {
-            font-weight: 600;
+        .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
             color: var(--text-main);
         }
 
-        .block-content {
-            padding: 24px;
+        .card-body {
+            padding: 30px;
         }
 
-        /* ===== FILE LIST STYLES ===== */
+        /* ===== CONTENT ELEMENTS ===== */
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        
+        th {
+            text-align: left;
+            padding: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 2px solid var(--border-light);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-main);
+        }
+        
+        tr:last-child td { border-bottom: none; }
+        
+        tr:hover td {
+            background: rgba(0,0,0,0.02);
+        }
+
+        /* File List */
         .file-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: grid;
+            gap: 12px;
         }
 
-        .download-btn {
+        .file-link {
             display: flex;
             align-items: center;
-            padding: 14px 18px;
+            padding: 16px;
             background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
             text-decoration: none;
-            color: var(--text-main);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s ease;
         }
 
-        .download-btn::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(135deg, rgba(90,90,90,0.03), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .download-btn:hover {
-            border-color: #b0b0b0;
-            background: var(--bg-card-hover);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transform: translateX(6px);
-        }
-
-        .download-btn:hover::after {
-            opacity: 1;
+        .file-link:hover {
+            border-color: var(--text-secondary);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .file-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-light);
+            color: var(--text-main);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
             margin-right: 15px;
-            color: white;
-            font-weight: bold;
-            font-size: 0.75em;
             flex-shrink: 0;
-            transition: transform 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
-        .download-btn:hover .file-icon {
-            transform: scale(1.1) rotate(3deg);
-        }
-
-        .icon-pptx { background: linear-gradient(135deg, var(--icon-pptx), #c0392b); }
-        .icon-html { background: linear-gradient(135deg, var(--icon-html), #d35400); }
-        .icon-img  { background: linear-gradient(135deg, var(--icon-img), #3498db); }
-        .icon-csv  { background: linear-gradient(135deg, var(--icon-csv), #229954); }
-        .icon-xlsx { background: linear-gradient(135deg, var(--icon-xlsx), #196f3d); }
 
         .file-info { flex-grow: 1; }
-        .file-name { font-weight: 600; font-size: 0.95em; display: block; }
-        .file-desc { font-size: 0.85em; color: var(--text-secondary); }
-        .arrow { 
-            color: #aaa; 
-            font-size: 1.2em; 
-            transition: transform 0.3s ease, color 0.3s; 
+        .file-name { display: block; font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+        .file-meta { font-size: 0.8rem; color: var(--text-secondary); }
+        
+        .arrow-icon {
+            color: var(--text-muted);
+            transition: transform 0.2s;
         }
-        .download-btn:hover .arrow {
-            transform: translateX(3px);
-            color: #666;
+        
+        .file-link:hover .arrow-icon {
+            transform: translateX(4px);
+            color: var(--text-main);
         }
 
-        /* ===== OTHER CONTENT STYLES ===== */
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin: 10px 0; 
-            font-size: 0.95em; 
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        th, td { padding: 12px 14px; border-bottom: 1px solid #eee; text-align: left; }
-        th { 
-            background: linear-gradient(135deg, #f0f0f0, #e8e8e8); 
-            color: var(--text-secondary); 
-            font-size: 0.85em; 
-            text-transform: uppercase; 
-            font-weight: 600;
-        }
-        tbody tr {
-            transition: background 0.2s;
-        }
-        tbody tr:hover {
-            background: #fafafa;
-        }
-        
-        .log-box { 
-            background: linear-gradient(135deg, #f8f9fa, #fff); 
-            border-left: 4px solid #666; 
-            padding: 15px; 
-            font-family: monospace; 
-            font-size: 0.9em; 
-            border-radius: 0 8px 8px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        
-        .code { 
-            background: linear-gradient(135deg, #e8e8e8, #f0f0f0); 
-            padding: 3px 6px; 
-            border-radius: 4px; 
-            font-family: monospace; 
-            color: #c0392b; 
-            font-weight: 500;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .quote { 
-            font-style: italic; 
-            color: var(--text-secondary); 
-            border-left: 4px solid #ccc; 
-            padding-left: 15px; 
-            margin: 15px 0; 
-            background: rgba(255,255,255,0.6);
-            padding: 12px 15px 12px 19px;
-            border-radius: 0 6px 6px 0;
-        }
-        
-        .metrics { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-            gap: 15px; 
-            margin-top: 15px; 
-        }
-        .metric-card { 
-            background: linear-gradient(135deg, #fafafa, #fff); 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: center; 
-            border: 1px solid #eee;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .metric-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: #ddd;
-        }
-        .metric-val { 
-            font-size: 1.4em; 
-            font-weight: 700; 
-            color: var(--text-main); 
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
         }
 
-        .tree-view { 
-            background: linear-gradient(135deg, #2d333b, #3a414a); 
-            color: #adbac7; 
-            padding: 15px; 
-            border-radius: 8px; 
-            font-family: monospace; 
-            overflow-x: auto; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        .metric-box {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid var(--border-light);
         }
-        .tree-hl { color: #fff; font-weight: bold; }
 
-        footer { 
-            text-align: center; 
-            color: #888; 
-            font-size: 0.9em; 
-            margin-top: 40px; 
+        .metric-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px; }
+        .metric-value { font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin-top: 5px; }
+
+        /* Logs & Code */
+        .log-block {
+            background: #222;
+            color: #ddd;
             padding: 20px;
-            animation: fadeIn 1s ease 1s forwards;
-            opacity: 0;
+            border-radius: var(--radius-md);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            position: relative;
+            overflow-x: auto;
+        }
+        
+        .log-line { display: block; margin-bottom: 4px; }
+        .log-highlight { color: #fff; font-weight: bold; }
+        .code-tag { color: #aaa; }
+
+        /* Quote */
+        .quote-box {
+            border-left: 4px solid var(--accent-mid);
+            padding: 15px 20px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.03), transparent);
+            font-style: italic;
+            color: var(--text-secondary);
+            border-radius: 0 8px 8px 0;
         }
 
-        /* ===== KEYFRAME ANIMATIONS ===== */
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-light);
+            margin-top: 40px;
+        }
+
+        /* Animations */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* Анимация парения для карточек при наведении */
-        .date-block.visible {
-            animation: float 6s ease-in-out infinite;
-        }
-        .date-block.visible:hover {
-            animation-play-state: paused;
-        }
-
-        /* Плавное появление элементов внутри блоков */
-        .block-content > * {
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeInUp 0.5s ease forwards;
-        }
-        .block-content > *:nth-child(1) { animation-delay: 0.1s; }
-        .block-content > *:nth-child(2) { animation-delay: 0.2s; }
-        .block-content > *:nth-child(3) { animation-delay: 0.3s; }
-        .block-content > *:nth-child(4) { animation-delay: 0.4s; }
-
+        /* Responsive */
         @media (max-width: 600px) {
-            .top-buttons { flex-direction: column; }
-            .top-btn { width: 100%; justify-content: center; }
-            .site-header h1 { font-size: 1.5em; }
-        }
-
-        /* Улучшенная читаемость: фокус на текстах */
-        h1, h2, h3, .file-name, .block-title {
-            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
-        }
-        
-        /* Плавный скролл */
-        html {
-            scroll-behavior: smooth;
+            h1 { font-size: 2rem; }
+            .hero-card { padding: 25px; }
+            .card-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .btn-group { flex-direction: column; width: 100%; }
+            .btn { width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-<header class="site-header">
-    <h1>📚 Информационный портал</h1>
-</header>
-
 <div class="container">
-
-    <!-- ═══════════════════════════════════════════ -->
-    <!-- ВЕРХНИЙ БЛОК: ОСНОВНЫЕ МАТЕРИАЛЫ           -->
-    <!-- ═══════════════════════════════════════════ -->
-    <div class="top-section">
-        <h2>⭐ Основные материалы проекта</h2>
-        <div class="top-buttons">
-            <a href="СетьВводный.pptx" class="top-btn">
-                📄 Скачать презентацию (.pptx)
-            </a>
-            <a href="index.html" class="top-btn" style="background: #555;">
-                🌐 Проверка кириллицы (.html)
-            </a>
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════ -->
-    <!-- ХРОНОЛОГИЯ: ОТ РАННЕГО К ПОЗДНЕМУ          -->
-    <!-- ═══════════════════════════════════════════ -->
-
-    <!-- 1. 16.02.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">16.02.26</span>
-            <span class="block-title">Топ-3 предсказания</span>
-        </div>
-        <div class="block-content">
-            <table>
-                <thead><tr><th>Класс</th><th>Вероятность</th></tr></thead>
-                <tbody>
-                    <tr><td>Husky</td><td><strong>75.46%</strong></td></tr>
-                    <tr><td>Siberian Husky</td><td>23.30%</td></tr>
-                    <tr><td>Alaskan Malamute</td><td>1.00%</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- 2. Архив / Без даты -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">Архив</span>
-            <span class="block-title">Логи, Цитаты и Задачи</span>
-        </div>
-        <div class="block-content">
-            <div class="log-box" style="margin-bottom: 20px;">
-                <p><strong>❓ Вопрос:</strong> Как оплатить заказ?</p>
-                <p style="color:#777; font-size:0.85em;">System: sim=0.941</p>
-                <p><strong>✅ Ответ:</strong> По QR-коду или телефону</p>
-            </div>
-            
-            <blockquote class="quote">
-                «У нашего поколения есть философ. Он не художник и не писатель. Он программист.»
-            </blockquote>
-
-            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
-                <p style="font-weight:600;">🧩 Криптоарифметика: ВОЛК + ЛИСА == ЗВЕРИ</p>
-                <p><span class="code">О=2 С=6 В=8 Р=5 К=3 А=4 З=1 Л=9 Е=0 И=7</span></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. 14.03.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">14.03.26</span>
-            <span class="block-title">Прогноз и Регрессия</span>
-        </div>
-        <div class="block-content">
-            <ul style="list-style:none; margin-bottom:15px;">
-                <li>⏱️ Подготовка: <strong>5 часов</strong></li>
-                <li>🎯 Балл: <strong>50.23</strong></li>
-            </ul>
-            <div class="metrics">
-                <div class="metric-card"><div style="font-size:0.8em; color:#777;">MSE Train</div><div class="metric-val">0.0044</div></div>
-                <div class="metric-card"><div style="font-size:0.8em; color:#777;">MSE Test</div><div class="metric-val">0.0039</div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. 21.03.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">21.03.26</span>
-            <span class="block-title">Кредитный скоринг</span>
-        </div>
-        <div class="block-content">
-            <div class="metrics">
-                <div class="metric-card"><div style="font-size:0.8em; color:#777;">Выдача кредита</div><div class="metric-val">0.69</div></div>
-                <div class="metric-card"><div style="font-size:0.8em; color:#777;">КАСКО</div><div class="metric-val" style="color:green;">1.0</div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 5. 31.03.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">31.03.26</span>
-            <span class="block-title">Алгоритм</span>
-        </div>
-        <div class="block-content">
-            <a href="Алгоритм.drawio.png" class="download-btn">
-                <div class="file-icon icon-img">IMG</div>
-                <div class="file-info">
-                    <span class="file-name">Алгоритм.drawio.png</span>
-                    <span class="file-desc">Блок-схема алгоритма</span>
-                </div>
-                <span class="arrow">↓</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 6. 01.04.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">01.04.26</span>
-            <span class="block-title">Диаграммы и таблицы</span>
-        </div>
-        <div class="block-content">
-            <div class="file-list">
-                <a href="Диаграмма.drawio.png" class="download-btn">
-                    <div class="file-icon icon-img">IMG</div>
-                    <div class="file-info">
-                        <span class="file-name">Диаграмма.drawio.png</span>
-                    </div>
-                    <span class="arrow">↓</span>
-                </a>
-                <a href="Сравнительная таблица.csv" class="download-btn">
-                    <div class="file-icon icon-csv">CSV</div>
-                    <div class="file-info">
-                        <span class="file-name">Сравнительная таблица.csv</span>
-                    </div>
-                    <span class="arrow">↓</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 7. 04.04.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">04.04.26</span>
-            <span class="block-title">База данных (Общая)</span>
-        </div>
-        <div class="block-content">
-            <a href="База данных.drawio.png" class="download-btn">
-                <div class="file-icon icon-img">DB</div>
-                <div class="file-info">
-                    <span class="file-name">База данных.drawio.png</span>
-                </div>
-                <span class="arrow">↓</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 8. 11.04.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">11.04.26</span>
-            <span class="block-title">Стоматология</span>
-        </div>
-        <div class="block-content">
-            <div class="tree-view" style="margin-bottom: 15px;">
-<pre>🏥 Пациент №2
-├── <span class="tree-hl">ID:</span> +7902B
-├── <span class="tree-hl">ФИО:</span> Анна Сидорова
-└── <span class="tree-hl">Приоритет:</span> ❗ 2</pre>
-            </div>
-            
-  
-       
-            <a href="База данных стоматология.drawio.png" class="download-btn">
-                <div class="file-icon icon-img">DB</div>
-                <div class="file-info">
-                    <span class="file-name">База данных стоматология.drawio.png</span>
-                </div>
-                <span class="arrow">↓</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 9. 04.05.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">04.05.26</span>
-            <span class="block-title">Пакет таблиц (Май)</span>
-        </div>
-        <div class="block-content">
-            <div class="file-list">
-                <a href="Таблица 1.xlsx" class="download-btn">
-                    <div class="file-icon icon-xlsx">XLS</div>
-                    <div class="file-info"><span class="file-name">Таблица 1.xlsx</span></div>
-                    <span class="arrow">↓</span>
-                </a>
-                <a href="Таблица 2.xlsx" class="download-btn">
-                    <div class="file-icon icon-xlsx">XLS</div>
-                    <div class="file-info"><span class="file-name">Таблица 2.xlsx</span></div>
-                    <span class="arrow">↓</span>
-                </a>
-                <a href="Таблица 3.xlsx" class="download-btn">
-                    <div class="file-icon icon-xlsx">XLS</div>
-                    <div class="file-info"><span class="file-name">Таблица 3.xlsx</span></div>
-                    <span class="arrow">↓</span>
-                </a>
-                <a href="Таблица 4.xlsx" class="download-btn">
-                    <div class="file-icon icon-xlsx">XLS</div>
-                    <div class="file-info"><span class="file-name">Таблица 4.xlsx</span></div>
-                    <span class="arrow">↓</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-     <!-- 10. 15.05.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">15.05.26</span>
-            <span class="block-title">Практика</span>
-        </div>
-        <div class="block-content">
-            <div class="file-list">
-                <a href="Самостоятельная работа.xlsx" class="download-btn">
-                    <div class="file-icon icon-xlsx">XLS</div>
-                    <div class="file-info"><span class="file-name">Самостоятельная работа.xlsx</span></div>
-                    <span class="arrow">↓</span>
-                </a>
-            </div>
-        </div>
-    </div>
     
-        <!-- 11. 18.05.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">18.05.26</span>
-            <span class="block-title">Программирование кодов</span>
-        </div>
-        <div class="block-content">
-            <div class="file-list">
-                <a href="Программирование.pptx" class="download-btn">
-                    <div class="file-icon icon-pptx">PPT</div>
-                    <div class="file-info"><span class="file-name">Программирование.pptx</span></div>
-                    <span class="arrow">↓</span>
-                </a>
-            </div>
+    <!-- Header -->
+    <header>
+        <h1>Информационный портал</h1>
+        <p>Архив материалов и документов</p>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero-card">
+        <div class="hero-title">Основные материалы проекта</div>
+        <div class="btn-group">
+            <a href="СетьВводный.pptx" class="btn">
+                <span>📄</span> Скачать презентацию (.pptx)
+            </a>
+            <a href="index.html" class="btn secondary">
+                <span>🌐</span> Проверка кириллицы (.html)
+            </a>
         </div>
     </div>
 
-           <!-- 12. 20.05.26 -->
-    <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">20.05.26</span>
-            <span class="block-title">Процессор Таблица</span>
-        </div>
-        <div class="block-content">
-            <div class="file-list">
-                <a href="Процессор Таблица.docx" class="download-btn">
-                    <div class="file-icon icon-html">DOC</div>
-                    <div class="file-info"><span class="file-name">Процессор Таблица.docx</span></div>
-                    <span class="arrow">↓</span>
-                </a>
+    <!-- Timeline Content -->
+    <main>
+        <!-- 16.02.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">16.02.26</span>
+                <span class="card-title">Топ-3 предсказания</span>
             </div>
-        </div>
-    </div>
+            <div class="card-body">
+                <table>
+                    <thead><tr><th>Класс</th><th>Вероятность</th></tr></thead>
+                    <tbody>
+                        <tr><td>Husky</td><td><strong>75.46%</strong></td></tr>
+                        <tr><td>Siberian Husky</td><td>23.30%</td></tr>
+                        <tr><td>Alaskan Malamute</td><td>1.00%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
 
-    
-             <!-- 13. 23.05.26 (Новый блок) -->
-        <div class="date-block">
-        <div class="block-header">
-            <span class="date-badge">23.05.26</span>
-            <span class="block-title">Установка Софта</span>
-        </div>
-        <div class="block-content">
-            <div class="file-list">
-                <a href="Pryamougolnik.kum" class="download-btn">
-                    <div class="file-icon icon-doc">KUM</div>
-                    <div class="file-info"><span class="file-name">Pryamougolnik.kum</span></div>
-                    <span class="arrow">↓</span>
-                    </a>
-        <div class="block-content">
-            <div class="log-box">
-                <p><strong>📐 Задача:</strong> Пересечение прямоугольников</p>
-                <p style="color:#555; margin: 5px 0;">Dims: [100x90] & [250x30]</p>
-                <p style="margin-top:8px;"><strong>✅ Результат:</strong> <span class="code">Периметр = 260</span></p>
+        <!-- Архив -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">Архив</span>
+                <span class="card-title">Логи и Цитаты</span>
+            </div>
+            <div class="card-body">
+                <div class="log-block" style="margin-bottom: 20px;">
+                    <span class="log-line"><span class="code-tag">❓ Q:</span> Как оплатить заказ?</span>
+                    <span class="log-line" style="color:#777; font-size:0.8em;">System: sim=0.941</span>
+                    <span class="log-line"><span class="code-tag">✅ A:</span> По QR-коду или телефону</span>
                 </div>
-        </div>
                 
+                <div class="quote-box">
+                    «У нашего поколения есть философ. Он не художник и не писатель. Он программист.»
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #fff; border: 1px solid var(--border-light); border-radius: 12px;">
+                    <p style="font-weight:600; font-size:0.9rem; margin-bottom:5px;">🧩 Криптоарифметика: ВОЛК + ЛИСА == ЗВЕРИ</p>
+                    <code style="background:var(--accent-light); padding: 2px 6px; border-radius: 4px; font-family: monospace;">О=2 С=6 В=8 Р=5 К=3 А=4 З=1 Л=9 Е=0 И=7</code>
+                </div>
             </div>
-        </div>
-    </div>
-    
+        </article>
+
+        <!-- 14.03.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">14.03.26</span>
+                <span class="card-title">Прогноз и Регрессия</span>
+            </div>
+            <div class="card-body">
+                <ul style="list-style:none; margin-bottom:20px; color:var(--text-secondary);">
+                    <li>⏱️ Подготовка: <strong style="color:var(--text-main)">5 часов</strong></li>
+                    <li>🎯 Балл: <strong style="color:var(--text-main)">50.23</strong></li>
+                </ul>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="metric-label">MSE Train</div>
+                        <div class="metric-value">0.0044</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">MSE Test</div>
+                        <div class="metric-value">0.0039</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 21.03.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">21.03.26</span>
+                <span class="card-title">Кредитный скоринг</span>
+            </div>
+            <div class="card-body">
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="metric-label">Выдача кредита</div>
+                        <div class="metric-value">0.69</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">КАСКО</div>
+                        <div class="metric-value" style="color:#444;">1.0</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 31.03.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">31.03.26</span>
+                <span class="card-title">Алгоритм</span>
+            </div>
+            <div class="card-body">
+                <div class="file-list">
+                    <a href="Алгоритм.drawio.png" class="file-link">
+                        <div class="file-icon">IMG</div>
+                        <div class="file-info">
+                            <span class="file-name">Алгоритм.drawio.png</span>
+                            <span class="file-meta">Блок-схема алгоритма</span>
+                        </div>
+                        <div class="arrow-icon">→</div>
+                    </a>
+                </div>
+            </div>
+        </article>
+
+        <!-- 01.04.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">01.04.26</span>
+                <span class="card-title">Диаграммы и таблицы</span>
+            </div>
+            <div class="card-body">
+                <div class="file-list">
+                    <a href="Диаграмма.drawio.png" class="file-link">
+                        <div class="file-icon">IMG</div>
+                        <div class="file-info"><span class="file-name">Диаграмма.drawio.png</span></div>
+                        <div class="arrow-icon">→</div>
+                    </a>
+                    <a href="Сравнительная таблица.csv" class="file-link">
+                        <div class="file-icon">CSV</div>
+                        <div class="file-info"><span class="file-name">Сравнительная таблица.csv</span></div>
+                        <div class="arrow-icon">→</div>
+                    </a>
+                </div>
+            </div>
+        </article>
+
+        <!-- 04.04.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">04.04.26</span>
+                <span class="card-title">База данных (Общая)</span>
+            </div>
+            <div class="card-body">
+                <div class="file-list">
+                    <a href="База данных.drawio.png" class="file-link">
+                        <div class="file-icon">DB</div>
+                        <div class="file-info"><span class="file-name">База данных.drawio.png</span></div>
+                        <div class="arrow-icon">→</div>
+                    </a>
+                </div>
+            </div>
+        </article>
+
+        <!-- 11.04.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">11.04.26</span>
+                <span class="card-title">Стоматология</span>
+            </div>
+            <div class="card-body">
+                <div class="log-block" style="margin-bottom: 20px; background: #f0f0f0; color: #333; border: 1px solid #ccc;">
+<pre style="font-family: 'JetBrains Mono', monospace;">🏥 Пациент №2
+├── <strong>ID:</strong> +7902B
+├── <strong>ФИО:</strong> Анна Сидорова
+└── <strong>Приоритет:</strong> ❗ 2</pre>
+                </div>
+                <div class="file-list">
+                    <a href="База данных стоматология.drawio.png" class="file-link">
+                        <div class="file-icon">DB</div>
+                        <div class="file-info"><span class="file-name">База данных стоматология.drawio.png</span></div>
+                        <div class="arrow-icon">→</div>
+                    </a>
+                </div>
+            </div>
+        </article>
+
+        <!-- 04.05.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">04.05.26</span>
+                <span class="card-title">Пакет таблиц (Май)</span>
+            </div>
+            <div class="card-body">
+                <div class="file-list">
+                    <a href="Таблица 1.xlsx" class="file-link"><div class="file-icon">XLS</div><div class="file-info"><span class="file-name">Таблица 1.xlsx</span></div><div class="arrow-icon">→</div></a>
+                    <a href="Таблица 2.xlsx" class="file-link"><div class="file-icon">XLS</div><div class="file-info"><span class="file-name">Таблица 2.xlsx</span></div><div class="arrow-icon">→</div></a>
+                    <a href="Таблица 3.xlsx" class="file-link"><div class="file-icon">XLS</div><div class="file-info"><span class="file-name">Таблица 3.xlsx</span></div><div class="arrow-icon">→</div></a>
+                    <a href="Таблица 4.xlsx" class="file-link"><div class="file-icon">XLS</div><div class="file-info"><span class="file-name">Таблица 4.xlsx</span></div><div class="arrow-icon">→</div></a>
+                </div>
+            </div>
+        </article>
+
+        <!-- 15.05.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">15.05.26</span>
+                <span class="card-title">Практика</span>
+            </div>
+            <div class="card-body">
+                <div class="file-list">
+                    <a href="Самостоятельная работа.xlsx" class="file-link"><div class="file-icon">XLS</div><div class="file-info"><span class="file-name">Самостоятельная работа.xlsx</span></div><div class="arrow-icon">→</div></a>
+                </div>
+            </div>
+        </article>
+        
+        <!-- 18.05.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">18.05.26</span>
+                <span class="card-title">Программирование кодов</span>
+            </div>
+            <div class="card-body">
+                <div class="file-list">
+                    <a href="Программирование.pptx" class="file-link"><div class="file-icon">PPT</div><div class="file-info"><span class="file-name">Программирование.pptx</span></div><div class="arrow-icon">→</div></a>
+                </div>
+            </div>
+        </article>
+
+        <!-- 20.05.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">20.05.26</span>
+                <span class="card-title">Процессор Таблица</span>
+            </div>
+            <div class="card-body">
+                <div class="file-list">
+                    <a href="Процессор Таблица.docx" class="file-link"><div class="file-icon">DOC</div><div class="file-info"><span class="file-name">Процессор Таблица.docx</span></div><div class="arrow-icon">→</div></a>
+                </div>
+            </div>
+        </article>
+
+        <!-- 23.05.26 -->
+        <article class="timeline-item">
+            <div class="card-header">
+                <span class="date-badge">23.05.26</span>
+                <span class="card-title">Установка Софта</span>
+            </div>
+            <div class="card-body">
+                <div class="file-list" style="margin-bottom: 20px;">
+                    <a href="Pryamougolnik.kum" class="file-link"><div class="file-icon">KUM</div><div class="file-info"><span class="file-name">Pryamougolnik.kum</span></div><div class="arrow-icon">→</div></a>
+                </div>
+                <div class="log-block">
+                    <span class="log-line"><span class="code-tag">📐 Задача:</span> Пересечение прямоугольников</span>
+                    <span class="log-line" style="color:#aaa;">Dims: [100x90] & [250x30]</span>
+                    <span class="log-line"><span class="code-tag">✅ Результат:</span> <span class="log-highlight">Периметр = 260</span></span>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Информационный сайт. Дизайн в стиле Gray Minimal.</p>
+    </footer>
+
 </div>
 
-<footer>
-    <p>© 2026 Информационный сайт</p>
-</footer>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Intersection Observer для анимации при скролле
+    // Intersection Observer for scroll animations
+    document.addEventListener("DOMContentLoaded", () => {
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
+            entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // Добавляем задержку для каскадного появления
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 100);
+                    entry.target.classList.add('visible');
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.date-block').forEach(block => {
-            observer.observe(block);
-        });
-
-        // Плавное появление хедера при загрузке
-        setTimeout(() => {
-            document.querySelector('.site-header').style.opacity = '1';
-        }, 100);
-
-        // Эффект параллакса для фона (опционально)
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            document.body.style.backgroundPositionY = `${scrolled * 0.3}px`;
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            observer.observe(item);
         });
     });
 </script>
