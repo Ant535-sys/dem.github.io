@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кроссворд - Анатомия</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .crossword-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        #crossword-grid {
+            display: grid;
+            gap: 2px;
+            background: #333;
+            padding: 2px;
+            border-radius: 5px;
+        }
+
+        .cell {
+            width: 40px;
+            height: 40px;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cell.empty {
+            background: #f0f0f0;
+            cursor: default;
+        }
+
+        .cell input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: transparent;
+            outline: none;
+            color: #333;
+        }
+
+        .cell.active-word {
+            background: #fff9c4 !important;
+        }
+
+        .cell.selected {
+            background: #ffeb3b !important;
+            box-shadow: inset 0 0 0 2px #f57f17;
+        }
+
+        .cell-number {
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            font-size: 10px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .questions-section {
+            margin-top: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .questions-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .question-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .question-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-item.active {
+            background: #fff9c4;
+            border-left-color: #f57f17;
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+        .question-text {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .question-direction {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .info {
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stats {
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            color: #1976d2;
+        }
+
+        @media (max-width: 768px) {
+            .cell {
+                width: 30px;
+                height: 30px;
+            }
+
+            .cell input {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🫀 Кроссворд: Анатомия</h1>
+        <p class="subtitle">Заполните клетки правильными буквами, используя вопросы ниже</p>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="crossword-wrapper">
+            <div id="crossword-grid"></div>
+        </div>
+
+        <div class="questions-section">
+            <h2>📝 Вопросы к кроссворду</h2>
+            <div id="questions-list"></div>
+        </div>
+
+        <div class="controls">
+            <button onclick="regenerateCrossword()">🔄 Сгенерировать заново</button>
+            <button onclick="checkAnswers()">✓ Проверить ответы</button>
+            <button onclick="clearGrid()">✗ Очистить</button>
+            <button onclick="showHint()">💡 Подсказка</button>
+            <button onclick="showAllAnswers()">👁 Показать все ответы</button>
+        </div>
+
+        <div class="info">
+            Используйте стрелки для навигации | Кликните на клетку или вопрос для выбора слова
+        </div>
+    </div>
+
+    <script>
+        // Данные кроссворда с вопросами
+        const words = [
+            {
+                word: 'АРТЕРИЯ',
+                question: 'Кровеносный сосуд, несущий кровь от сердца к органам и тканям организма. Имеет толстые эластичные стенки, способные выдерживать высокое давление крови.'
+            },
+            {
+                word: 'СЕРДЦЕ',
+                question: 'Полый мышечный орган, выполняющий функцию насоса в кровеносной системе. Обеспечивает непрерывное движение крови по сосудам. Расположено в грудной полости.'
+            },
+            {
+                word: 'ЖЕЛУДОК',
+                question: 'Полый мышечный орган пищеварительной системы, расположенный между пищеводом и двенадцатиперстной кишкой. В нем происходит начальное переваривание пищи.'
+            },
+            {
+                word: 'МЫШЦА',
+                question: 'Орган тела человека и животных, состоящий из мышечной ткани, способной сокращаться под влиянием нервных импульсов. Обеспечивает движение тела и работу внутренних органов.'
+            },
+            {
+                word: 'ЛЕГКОЕ',
+                question: 'Парный орган дыхательной системы, расположенный в грудной полости. Служит для газообмена между воздухом и кровью. Имеет губчатую структуру.'
+            },
+            {
+                word: 'РЕБРО',
+                question: 'Плоская изогнутая кость, образующая вместе с другими ребрами грудную клетку. Защищает сердце и легкие. У человека обычно 12 пар ребер.'
+            },
+            {
+                word: 'НЕРВ',
+                question: 'Структура периферической нервной системы, состоящая из пучков нервных волокон. Передает электрические импульсы между центральной нервной системой и органами.'
+            },
+            {
+                word: 'МОЗГ',
+                question: 'Главный орган центральной нервной системы, расположенный в черепной коробке. Контролирует все функции организма, отвечает за мышление, память, сознание.'
+            },
+            {
+                word: 'КОСТЬ',
+                question: 'Твердый орган скелета, состоящий из костной ткани. Выполняет опорную, защитную и кроветворную функции. Содержит минеральные вещества, придающие прочность.'
+            },
+            {
+                word: 'ПОЧКА',
+                question: 'Парный орган мочевыделительной системы бобовидной формы. Фильтрует кровь, удаляет продукты обмена веществ, регулирует водно-солевой баланс организма.'
+            }
+        ];
+
+        let grid = [];
+        let placedWords = [];
+        let currentWord = null;
+
+        // Функция для создания пустой сетки
+        function createEmptyGrid(size) {
+            const newGrid = [];
+            for (let i = 0; i < size; i++) {
+                newGrid[i] = [];
+                for (let j = 0; j < size; j++) {
+                    newGrid[i][j] = null;
+                }
+            }
+            return newGrid;
+        }
+
+        // Проверка возможности размещения слова
+        function canPlaceWord(word, row, col, direction, gridSize) {
+            if (direction === 'horizontal') {
+                if (col + word.length > gridSize) return false;
+
+                for (let i = 0; i < word.length; i++) {
+                    const cell = grid[row][col + i];
+                    if (cell !== null && cell !== word[i]) {
+                        return false;
+                    }
+
+                    // Проверка соседних клеток (только если текущая клетка пустая)
+                    if (cell === null) {
+                        if (row > 0 && grid[row - 1][col + i] !== null &&
+                            !isPartOfWord(row - 1, col + i, 'vertical')) return false;
+                        if (row < gridSize - 1 && grid[row + 1][col + i] !== null &&
+                            !isPartOfWord(row + 1, col + i, 'vertical')) return false;
+                    }
+                }
+
+                // Проверка начала и конца слова
+                if (col > 0 && grid[row][col - 1] !== null) return false;
+                if (col + word.length < gridSize && grid[row][col + word.length] !== null) return false;
+
+            } else { // vertical
+                if (row + word.length > gridSize) return false;
+
+                for (let i = 0; i < word.length; i++) {
+                    const cell = grid[row + i][col];
+                    if (cell !== null && cell !== word[i]) {
+                        return false;
+                    }
+
+                    // Проверка соседних клеток
+                    if (cell === null) {
+                        if (col > 0 && grid[row + i][col - 1] !== null &&
+                            !isPartOfWord(row + i, col - 1, 'horizontal')) return false;
+                        if (col < gridSize - 1 && grid[row + i][col + 1] !== null &&
+                            !isPartOfWord(row + i, col + 1, 'horizontal')) return false;
+                    }
+                }
+
+                // Проверка начала и конца слова
+                if (row > 0 && grid[row - 1][col] !== null) return false;
+                if (row + word.length < gridSize && grid[row + word.length][col] !== null) return false;
+            }
+
+            return true;
+        }
+
+        // Проверка является ли клетка частью слова определенной ориентации
+        function isPartOfWord(row, col, direction) {
+            return placedWords.some(w => {
+                if (w.direction !== direction) return false;
+                if (direction === 'horizontal') {
+                    return w.row === row && col >= w.col && col < w.col + w.word.length;
+                } else {
+                    return w.col === col && row >= w.row && row < w.row + w.word.length;
+                }
+            });
+        }
+
+        // Размещение слова в сетке
+        function placeWord(word, row, col, direction) {
+            for (let i = 0; i < word.length; i++) {
+                if (direction === 'horizontal') {
+                    grid[row][col + i] = word[i];
+                } else {
+                    grid[row + i][col] = word[i];
+                }
+            }
+
+            placedWords.push({
+                word: word,
+                row: row,
+                col: col,
+                direction: direction
+            });
+        }
+
+        // Поиск пересечений между словами
+        function findIntersections(word1, word2) {
+            const intersections = [];
+            for (let i = 0; i < word1.length; i++) {
+                for (let j = 0; j < word2.length; j++) {
+                    if (word1[i] === word2[j]) {
+                        intersections.push({ pos1: i, pos2: j, letter: word1[i] });
+                    }
+                }
+            }
+            return intersections;
+        }
+
+        // Попытка разместить слово с разными стратегиями
+        function tryPlaceWord(wordObj, gridSize) {
+            // Сначала пробуем через пересечения
+            for (const placedWord of placedWords) {
+                const intersections = findIntersections(wordObj.word, placedWord.word);
+
+                // Перемешиваем пересечения для разнообразия
+                for (let k = intersections.length - 1; k > 0; k--) {
+                    const j = Math.floor(Math.random() * (k + 1));
+                    [intersections[k], intersections[j]] = [intersections[j], intersections[k]];
+                }
+
+                for (const intersection of intersections) {
+                    const newDirection = placedWord.direction === 'horizontal' ? 'vertical' : 'horizontal';
+
+                    let newRow, newCol;
+                    if (newDirection === 'vertical') {
+                        newRow = placedWord.row - intersection.pos2;
+                        newCol = placedWord.col + intersection.pos1;
+                    } else {
+                        newRow = placedWord.row + intersection.pos1;
+                        newCol = placedWord.col - intersection.pos2;
+                    }
+
+                    if (newRow >= 0 && newCol >= 0 &&
+                        canPlaceWord(wordObj.word, newRow, newCol, newDirection, gridSize)) {
+                        placeWord(wordObj.word, newRow, newCol, newDirection);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        // Основная функция генерации кроссворда с несколькими попытками
+        function generateCrossword() {
+            const gridSize = 30;
+            let bestResult = null;
+            let maxPlaced = 0;
+
+            // Делаем несколько попыток генерации
+            for (let attempt = 0; attempt < 50; attempt++) {
+                grid = createEmptyGrid(gridSize);
+                placedWords = [];
+
+                // Перемешиваем слова для разнообразия
+                const shuffledWords = [...words].sort(() => Math.random() - 0.5);
+                // Но самое длинное слово всегда первое
+                shuffledWords.sort((a, b) => b.word.length - a.word.length);
+
+                // Размещаем первое слово по центру горизонтально
+                const firstWord = shuffledWords[0];
+                const startCol = Math.floor((gridSize - firstWord.word.length) / 2);
+                const startRow = Math.floor(gridSize / 2);
+
+                placeWord(firstWord.word, startRow, startCol, 'horizontal');
+
+                // Пытаемся разместить остальные слова
+                let placedCount = 1;
+                for (let i = 1; i < shuffledWords.length; i++) {
+                    if (tryPlaceWord(shuffledWords[i], gridSize)) {
+                        placedCount++;
+                    }
+                }
+
+                // Сохраняем лучший результат
+                if (placedCount > maxPlaced) {
+                    maxPlaced = placedCount;
+                    bestResult = {
+                        grid: grid.map(row => [...row]),
+                        placedWords: [...placedWords]
+                    };
+                }
+
+                // Если разместили все слова, прекращаем попытки
+                if (placedCount === words.length) {
+                    break;
+                }
+            }
+
+            // Используем лучший результат
+            if (bestResult) {
+                grid = bestResult.grid;
+                placedWords = bestResult.placedWords;
+            }
+
+            return calculateBounds();
+        }
+
+        // Вычисление границ заполненной области
+        function calculateBounds() {
+            let minRow = Infinity, maxRow = -Infinity;
+            let minCol = Infinity, maxCol = -Infinity;
+
+            for (let i = 0; i < grid.length; i++) {
+                for (let j = 0; j < grid[i].length; j++) {
+                    if (grid[i][j] !== null) {
+                        minRow = Math.min(minRow, i);
+                        maxRow = Math.max(maxRow, i);
+                        minCol = Math.min(minCol, j);
+                        maxCol = Math.max(maxCol, j);
+                    }
+                }
+            }
+
+            return {
+                minRow, maxRow, minCol, maxCol,
+                rows: maxRow - minRow + 1,
+                cols: maxCol - minCol + 1
+            };
+        }
+
+        // Отрисовка кроссворда
+        function renderCrossword() {
+            const bounds = generateCrossword();
+            const gridElement = document.getElementById('crossword-grid');
+
+            // Устанавливаем размеры сетки
+            gridElement.style.gridTemplateColumns = `repeat(${bounds.cols}, 40px)`;
+            gridElement.innerHTML = '';
+
+            // Создаем нумерацию слов
+            const wordNumbers = {};
+            placedWords.forEach((word, index) => {
+                const key = `${word.row},${word.col}`;
+                if (!wordNumbers[key]) {
+                    wordNumbers[key] = index + 1;
+                }
+            });
+
+            // Отрисовываем клетки
+            for (let i = bounds.minRow; i <= bounds.maxRow; i++) {
+                for (let j = bounds.minCol; j <= bounds.maxCol; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+
+                    if (grid[i][j] !== null) {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.maxLength = 1;
+                        input.dataset.correctLetter = grid[i][j];
+                        input.dataset.row = i;
+                        input.dataset.col = j;
+
+                        // Добавляем номер если это начало слова
+                        const key = `${i},${j}`;
+                        if (wordNumbers[key]) {
+                            const number = document.createElement('span');
+                            number.className = 'cell-number';
+                            number.textContent = wordNumbers[key];
+                            cell.appendChild(number);
+                        }
+
+                        cell.appendChild(input);
+
+                        // Обработчики событий
+                        input.addEventListener('click', () => selectCell(i, j));
+                        input.addEventListener('keydown', handleKeyDown);
+                        input.addEventListener('input', handleInput);
+                    } else {
+                        cell.classList.add('empty');
+                    }
+
+                    gridElement.appendChild(cell);
+                }
+            }
+
+            // Отображаем вопросы
+            renderQuestions();
+
+            // Обновляем статистику
+            updateStats();
+        }
+
+        // Обновление статистики
+        function updateStats() {
+            const statsElement = document.getElementById('stats');
+            const totalWords = words.length;
+            const placedCount = placedWords.length;
+            statsElement.innerHTML = `Размещено слов: ${placedCount} из ${totalWords}`;
+        }
+
+        // Отображение вопросов
+        function renderQuestions() {
+            const questionsList = document.getElementById('questions-list');
+            questionsList.innerHTML = '';
+
+            placedWords.forEach((word, index) => {
+                const originalWord = words.find(w => w.word === word.word);
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.dataset.wordIndex = index;
+
+                const directionText = word.direction === 'horizontal' ? 'По горизонтали' : 'По вертикали';
+
+                questionItem.innerHTML = `
+                    <span class="question-number">${index + 1}.</span>
+                    <span class="question-text">${originalWord.question}</span>
+                    <span class="question-direction">${directionText}</span>
+                `;
+
+                questionItem.addEventListener('click', () => highlightWord(index));
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        // Выбор клетки
+        function selectCell(row, col) {
+            const word = findWordAtPosition(row, col);
+            if (word) {
+                currentWord = word;
+                highlightWord(placedWords.indexOf(word));
+
+                const input = document.querySelector(`input[data-row="${row}"][data-col="${col}"]`);
+                if (input) input.focus();
+            }
+        }
+
+        // Поиск слова в позиции
+        function findWordAtPosition(row, col) {
+            return placedWords.find(word => {
+                if (word.direction === 'horizontal') {
+                    return word.row === row && col >= word.col && col < word.col + word.word.length;
+                } else {
+                    return word.col === col && row >= word.row && row < word.row + word.word.length;
+                }
+            });
+        }
+
+        // Подсветка слова
+        function highlightWord(wordIndex) {
+            // Убираем предыдущую подсветку
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.classList.remove('active-word', 'selected');
+            });
+            document.querySelectorAll('.question-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            const word = placedWords[wordIndex];
+            if (!word) return;
+
+            currentWord = word;
+
+            // Подсвечиваем клетки слова
+            for (let i = 0; i < word.word.length; i++) {
+                let row, col;
+                if (word.direction === 'horizontal') {
+                    row = word.row;
+                    col = word.col + i;
+                } else {
+                    row = word.row + i;
+                    col = word.col;
+                }
+
+                const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+                if (cell) {
+                    cell.classList.add('active-word');
+                }
+            }
+
+            // Подсвечиваем вопрос
+            const questionItem = document.querySelector(`.question-item[data-word-index="${wordIndex}"]`);
+            if (questionItem) {
+                questionItem.classList.add('active');
+                questionItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Обработка ввода
+        function handleInput(e) {
+            const input = e.target;
+            input.value = input.value.toUpperCase();
+
+            if (input.value.length === 1) {
+                moveToNextCell(input);
+            }
+        }
+
+        // Переход к следующей клетке
+        function moveToNextCell(currentInput) {
+            const row = parseInt(currentInput.dataset.row);
+            const col = parseInt(currentInput.dataset.col);
+
+            let nextRow, nextCol;
+            if (currentWord.direction === 'horizontal') {
+                nextRow = row;
+                nextCol = col + 1;
+            } else {
+                nextRow = row + 1;
+                nextCol = col;
+            }
+
+            const nextInput = document.querySelector(`input[data-row="${nextRow}"][data-col="${nextCol}"]`);
+            if (nextInput) {
+                nextInput.focus();
+            }
+        }
+
+        // Обработка клавиш
+        function handleKeyDown(e) {
+            const input = e.target;
+            const row = parseInt(input.dataset.row);
+            const col = parseInt(input.dataset.col);
+
+            switch(e.key) {
+                case 'ArrowRight':
+                    e.preventDefault();
+                    moveFocus(row, col + 1);
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    moveFocus(row, col - 1);
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    moveFocus(row + 1, col);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    moveFocus(row - 1, col);
+                    break;
+                case 'Backspace':
+                    if (input.value === '') {
+                        e.preventDefault();
+                        moveFocusToPrevious(row, col);
+                    }
+                    break;
+            }
+        }
+
+        // Перемещение фокуса
+        function moveFocus(row, col) {
+            const input = document.querySelector(`input[data-row="${row}"][data-col="${col}"]`);
+            if (input) {
+                input.focus();
+                selectCell(row, col);
+            }
+        }
+
+        // Перемещение к предыдущей клетке
+        function moveFocusToPrevious(row, col) {
+            let prevRow, prevCol;
+            if (currentWord.direction === 'horizontal') {
+                prevRow = row;
+                prevCol = col - 1;
+            } else {
+                prevRow = row - 1;
+                prevCol = col;
+            }
+
+            const prevInput = document.querySelector(`input[data-row="${prevRow}"][data-col="${prevCol}"]`);
+            if (prevInput) {
+                prevInput.focus();
+            }
+        }
+
+        // Проверка ответов
+        function checkAnswers() {
+            let correct = 0;
+            let total = 0;
+
+            document.querySelectorAll('input').forEach(input => {
+                if (input.value) {
+                    total++;
+                    if (input.value.toUpperCase() === input.dataset.correctLetter) {
+                        correct++;
+                        input.style.color = 'green';
+                    } else {
+                        input.style.color = 'red';
+                    }
+                }
+            });
+
+            if (total === 0) {
+                alert('Заполните хотя бы одну клетку!');
+            } else {
+                const percentage = Math.round((correct / total) * 100);
+                let message = `Правильно: ${correct} из ${total} (${percentage}%)\n\n`;
+
+                if (percentage === 100) {
+                    message += '🎉 Отлично! Все ответы верны!';
+                } else if (percentage >= 70) {
+                    message += '👍 Хороший результат!';
+                } else {
+                    message += '💪 Попробуйте еще раз!';
+                }
+
+                alert(message);
+            }
+        }
+
+        // Очистка сетки
+        function clearGrid() {
+            document.querySelectorAll('input').forEach(input => {
+                input.value = '';
+                input.style.color = '#333';
+            });
+        }
+
+        // Показать подсказку
+        function showHint() {
+            const emptyInputs = Array.from(document.querySelectorAll('input')).filter(input => !input.value);
+            if (emptyInputs.length > 0) {
+                const randomInput = emptyInputs[Math.floor(Math.random() * emptyInputs.length)];
+                randomInput.value = randomInput.dataset.correctLetter;
+                randomInput.style.color = 'blue';
+                randomInput.focus();
+            }
+        }
+
+        // Показать все ответы
+        function showAllAnswers() {
+            if (confirm('Вы уверены, что хотите увидеть все ответы?')) {
+                document.querySelectorAll('input').forEach(input => {
+                    input.value = input.dataset.correctLetter;
+                    input.style.color = 'green';
+                });
+            }
+        }
+
+        // Перегенерация кроссворда
+        function regenerateCrossword() {
+            if (confirm('Сгенерировать новый вариант кроссворда?')) {
+                renderCrossword();
+            }
+        }
+
+        // Инициализация при загрузке страницы
+        window.addEventListener('load', renderCrossword);
+    </script>
+</body>
+</html>
